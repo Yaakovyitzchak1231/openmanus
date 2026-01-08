@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  openmanus-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: openmanus-web:latest
+    container_name: openmanus-web
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      # LLM Configuration
+      - LLM_MODEL=${LLM_MODEL:-claude-3-7-sonnet-20250219}
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://api.anthropic.com/v1/}
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-8192}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.0}
+
+      # Alternative API Keys
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+
+      # Daytona Sandbox (optional)
+      - DAYTONA_API_KEY=${DAYTONA_API_KEY}
+      - DAYTONA_SERVER_URL=${DAYTONA_SERVER_URL:-https://app.daytona.io/api}
+      - DAYTONA_TARGET=${DAYTONA_TARGET:-us}
+
+      # Server Configuration
+      - HOST=0.0.0.0
+      - PORT=8000
+      - PYTHONUNBUFFERED=1
+
+      # Browser Configuration
+      - BROWSER_HEADLESS=${BROWSER_HEADLESS:-true}
+      - BROWSER_DISABLE_SECURITY=${BROWSER_DISABLE_SECURITY:-true}
+
+      # Search Configuration
+      - SEARCH_ENGINE=${SEARCH_ENGINE:-Google}
+
+    volumes:
+      # Mount config directory for custom configurations
+      - ./config:/app/config:ro
+      # Mount workspace for persistent data
+      - ./workspace:/app/workspace
+      # Optional: Mount MCP config if needed
+      - ./config/mcp.json:/app/config/mcp.json:ro
+
+    networks:
+      - openmanus-network
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Resource limits (adjust based on your needs)
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G
+        reservations:
+          cpus: "1"
+          memory: 2G
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  openmanus-network:
+    driver: bridge
+
+volumes:
+  workspace-data:

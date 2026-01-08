@@ -1,0 +1,58 @@
+services:
+  - type: web
+    name: openmanus
+    env: docker
+    dockerfilePath: ./Dockerfile.web
+    plan: starter
+    region: oregon
+
+    healthCheckPath: /health
+
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+
+      - key: PORT
+        value: 8000
+
+      - key: PYTHONUNBUFFERED
+        value: 1
+
+      - key: LLM_MODEL
+        value: claude-3-7-sonnet-20250219
+
+      - key: LLM_BASE_URL
+        value: https://api.anthropic.com/v1/
+
+      - key: LLM_MAX_TOKENS
+        value: 8192
+
+      - key: LLM_TEMPERATURE
+        value: 0.0
+
+      - key: BROWSER_HEADLESS
+        value: true
+
+      # Secrets - Set these in Render Dashboard
+      - key: LLM_API_KEY
+        sync: false
+
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+      - key: OPENAI_API_KEY
+        sync: false
+
+      - key: OPENROUTER_API_KEY
+        sync: false
+
+      - key: DAYTONA_API_KEY
+        sync: false
+
+    autoDeploy: true
+
+    # Disk for persistent workspace
+    disk:
+      name: workspace-data
+      mountPath: /app/workspace
+      sizeGB: 1

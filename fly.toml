@@ -1,0 +1,57 @@
+app = "openmanus"
+primary_region = "sea"
+
+[build]
+dockerfile = "Dockerfile.web"
+
+[env]
+HOST = "0.0.0.0"
+PORT = "8000"
+PYTHONUNBUFFERED = "1"
+LLM_MODEL = "claude-3-7-sonnet-20250219"
+LLM_BASE_URL = "https://api.anthropic.com/v1/"
+LLM_MAX_TOKENS = "8192"
+LLM_TEMPERATURE = "0.0"
+BROWSER_HEADLESS = "true"
+
+[http_service]
+internal_port = 8000
+force_https = true
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
+processes = ["app"]
+
+[[http_service.checks]]
+grace_period = "30s"
+interval = "15s"
+method = "GET"
+timeout = "5s"
+path = "/health"
+
+[[services]]
+protocol = "tcp"
+internal_port = 8000
+
+[[services.ports]]
+port = 80
+handlers = ["http"]
+force_https = true
+
+[[services.ports]]
+port = 443
+handlers = ["tls", "http"]
+
+[services.concurrency]
+type = "connections"
+hard_limit = 25
+soft_limit = 20
+
+[[vm]]
+cpu_kind = "shared"
+cpus = 1
+memory_gb = 2
+
+[mounts]
+source = "workspace_data"
+destination = "/app/workspace"
