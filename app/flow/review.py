@@ -41,10 +41,7 @@ class ReviewFlow(BaseFlow):
             agents: Dict with 'doer' and 'reviewer' keys, or single doer agent
             max_iterations: Maximum number of Doer-Critic iterations
         """
-        super().__init__(agents, **kwargs)
-        self.max_iterations = max_iterations
-
-        # Ensure we have both doer and reviewer
+        # Handle agents dict before super().__init__
         if isinstance(agents, dict):
             if "doer" not in agents:
                 raise ValueError("ReviewFlow requires 'doer' agent in agents dict")
@@ -53,7 +50,14 @@ class ReviewFlow(BaseFlow):
                 agents["reviewer"] = Reviewer()
         else:
             # Single agent provided, treat as doer and create reviewer
-            self.agents = {"doer": agents, "reviewer": Reviewer()}
+            agents = {"doer": agents, "reviewer": Reviewer()}
+
+        super().__init__(agents, **kwargs)
+        self.max_iterations = max_iterations
+
+    async def execute(self, input_text: str) -> str:
+        """Execute the flow with given input (BaseFlow interface)."""
+        return await self.run(input_text)
 
     async def run(self, request: str) -> str:
         """

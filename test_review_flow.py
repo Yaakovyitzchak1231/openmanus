@@ -20,7 +20,7 @@ async def test_review_flow():
     task = """Write a Python function to calculate the factorial of a number.
     Make sure to handle edge cases like n=0 and negative numbers."""
 
-    print("🧪 Testing ReviewFlow...")
+    print("Testing ReviewFlow...")
     print(f"Task: {task}\n")
 
     result = await flow.run(task)

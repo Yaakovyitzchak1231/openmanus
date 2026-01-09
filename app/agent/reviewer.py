@@ -92,11 +92,8 @@ class Reviewer(BaseAgent):
                 messages=[last_message], system_msgs=[system_msg], stream=False
             )
 
-            review_content = (
-                response.content
-                if response and response.content
-                else "No review generated"
-            )
+            # llm.ask() returns a string directly, not an object with .content
+            review_content = response if response else "No review generated"
 
             # Add review to memory
             self.update_memory("assistant", review_content)
