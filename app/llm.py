@@ -240,14 +240,14 @@ class LLM:
 
         Phase 1.5/2 Integration: Automatically tracks costs via cost_tracker.
         """
-        self.input_token_count += input_tokens
-        self.completion_token_count += completion_tokens
+        self.total_input_tokens += input_tokens
+        self.total_completion_tokens += completion_tokens
         logger.info(
             f"Token usage: Input={input_tokens}, Completion={completion_tokens}, "
-            f"Cumulative Input={self.input_token_count}, "
-            f"Cumulative Completion={self.completion_token_count}, "
+            f"Cumulative Input={self.total_input_tokens}, "
+            f"Cumulative Completion={self.total_completion_tokens}, "
             f"Total={input_tokens + completion_tokens}, "
-            f"Cumulative Total={self.input_token_count + self.completion_token_count}"
+            f"Cumulative Total={self.total_input_tokens + self.total_completion_tokens}"
         )
 
         # Phase 1.5/2: Log costs to cost tracker
@@ -267,7 +267,7 @@ class LLM:
     def check_token_limit(self, input_tokens: int) -> bool:
         """Check if token limits are exceeded"""
         if self.max_input_tokens is not None:
-            return (self.input_token_count + input_tokens) <= self.max_input_tokens
+            return (self.total_input_tokens + input_tokens) <= self.max_input_tokens
         # If max_input_tokens is not set, always return True
         return True
 

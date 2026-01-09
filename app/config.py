@@ -60,6 +60,21 @@ class SearchSettings(BaseModel):
     )
 
 
+class AgentSettings(BaseModel):
+    high_effort_mode: bool = Field(
+        default=False, description="Enable high-effort mode with extended steps"
+    )
+    max_steps_normal: int = Field(
+        default=20, description="Maximum steps in normal mode"
+    )
+    max_steps_high_effort: int = Field(
+        default=50, description="Maximum steps in high-effort mode"
+    )
+    enable_reflection: bool = Field(
+        default=True, description="Enable reflection prompts in high-effort mode"
+    )
+
+
 class RunflowSettings(BaseModel):
     use_data_analysis_agent: bool = Field(
         default=False, description="Enable data analysis agent in run flow"
@@ -186,6 +201,9 @@ class AppConfig(BaseModel):
     run_flow_config: Optional[RunflowSettings] = Field(
         None, description="Run flow configuration"
     )
+    agent_config: Optional[AgentSettings] = Field(
+        None, description="Agent configuration"
+    )
     daytona_config: Optional[DaytonaSettings] = Field(
         None, description="Daytona configuration"
     )
@@ -310,6 +328,13 @@ class Config:
             run_flow_settings = RunflowSettings(**run_flow_config)
         else:
             run_flow_settings = RunflowSettings()
+
+        agent_config = raw_config.get("agent")
+        if agent_config:
+            agent_settings = AgentSettings(**agent_config)
+        else:
+            agent_settings = AgentSettings()
+
         config_dict = {
             "llm": {
                 "default": default_settings,
@@ -323,6 +348,7 @@ class Config:
             "search_config": search_settings,
             "mcp_config": mcp_settings,
             "run_flow_config": run_flow_settings,
+            "agent_config": agent_settings,
             "daytona_config": daytona_settings,
         }
 
@@ -357,6 +383,11 @@ class Config:
     def run_flow_config(self) -> RunflowSettings:
         """Get the Run Flow configuration"""
         return self._config.run_flow_config
+
+    @property
+    def agent(self) -> AgentSettings:
+        """Get the Agent configuration"""
+        return self._config.agent_config
 
     @property
     def workspace_root(self) -> Path:
