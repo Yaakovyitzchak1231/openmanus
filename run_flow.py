@@ -5,6 +5,7 @@ from app.agent.data_analysis import DataAnalysis
 from app.agent.manus import Manus
 from app.config import config
 from app.flow.flow_factory import FlowFactory, FlowType
+from app.flow.review import ReviewFlow
 from app.logger import logger
 
 
@@ -14,6 +15,7 @@ async def run_flow():
     }
     if config.run_flow_config.use_data_analysis_agent:
         agents["data_analysis"] = DataAnalysis()
+
     try:
         prompt = input("Enter your prompt: ")
 
@@ -21,10 +23,25 @@ async def run_flow():
             logger.warning("Empty prompt provided.")
             return
 
+        # Create base flow (PlanningFlow)
         flow = FlowFactory.create_flow(
             flow_type=FlowType.PLANNING,
             agents=agents,
         )
+
+        # Phase 2: Wrap with ReviewFlow if use_reviewer_agent is enabled
+        if config.run_flow_config.use_reviewer_agent:
+            logger.info(
+                "🔄 Reviewer agent enabled - using Doer-Critic self-correction loop"
+            )
+            max_iterations = getattr(config.run_flow_config, "max_review_iterations", 3)
+
+            # Use Manus as the doer agent for ReviewFlow
+            manus_agent = await Manus.create()
+            flow = ReviewFlow(
+                agents={"doer": manus_agent}, max_iterations=max_iterations
+            )
+
         logger.warning("Processing your request...")
 
         try:

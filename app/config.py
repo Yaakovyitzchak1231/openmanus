@@ -79,6 +79,12 @@ class RunflowSettings(BaseModel):
     use_data_analysis_agent: bool = Field(
         default=False, description="Enable data analysis agent in run flow"
     )
+    use_reviewer_agent: bool = Field(
+        default=False, description="Enable Doer-Critic self-correction loop"
+    )
+    max_review_iterations: int = Field(
+        default=3, description="Maximum Doer-Critic iterations per step"
+    )
 
 
 class BrowserSettings(BaseModel):
