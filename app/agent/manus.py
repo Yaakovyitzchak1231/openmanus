@@ -19,13 +19,18 @@ class Manus(ToolCallAgent):
     """A versatile general-purpose agent with support for both local and MCP tools."""
 
     name: str = "Manus"
-    description: str = "A versatile agent that can solve various tasks using multiple tools including MCP-based tools"
+    description: str = (
+        "A versatile agent that can solve various tasks using multiple tools including MCP-based tools"
+    )
 
     system_prompt: str = SYSTEM_PROMPT.format(directory=config.workspace_root)
     next_step_prompt: str = NEXT_STEP_PROMPT
 
     max_observe: int = 10000
-    max_steps: int = 20
+
+    # Phase 2/3: Configurable max_steps based on effort level
+    # Will be set in __init__ based on config.agent settings
+    max_steps: int = 20  # Default, overridden by config
 
     # MCP clients for remote tool access
     mcp_clients: MCPClients = Field(default_factory=MCPClients)
@@ -52,8 +57,26 @@ class Manus(ToolCallAgent):
 
     @model_validator(mode="after")
     def initialize_helper(self) -> "Manus":
-        """Initialize basic components synchronously."""
+        """
+        Initialize basic components synchronously.
+
+        Phase 2/3: Apply high-effort mode settings from config.
+        """
         self.browser_context_helper = BrowserContextHelper(self)
+
+        # Apply high-effort mode from config if enabled
+        if hasattr(config, "agent") and config.agent:
+            high_effort = getattr(config.agent, "high_effort_mode", False)
+            if high_effort:
+                # Use high-effort max_steps
+                self.max_steps = getattr(config.agent, "max_steps_high_effort", 50)
+                self.effort_level = "high"
+                logger.info(f"High-effort mode enabled: max_steps={self.max_steps}")
+            else:
+                # Use normal max_steps
+                self.max_steps = getattr(config.agent, "max_steps_normal", 20)
+                self.effort_level = "normal"
+
         return self
 
     @classmethod

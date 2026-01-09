@@ -40,6 +40,12 @@ class BaseAgent(BaseModel, ABC):
     max_steps: int = Field(default=10, description="Maximum steps before termination")
     current_step: int = Field(default=0, description="Current step in execution")
 
+    # Phase 2/3: High-effort mode support
+    effort_level: str = Field(
+        default="normal",
+        description="Effort level: 'normal' (default) or 'high' (extended thinking with more steps)",
+    )
+
     duplicate_threshold: int = 2
 
     class Config:
