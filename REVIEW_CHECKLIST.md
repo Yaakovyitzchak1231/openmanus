@@ -24,9 +24,10 @@ This checklist provides a systematic framework for reviewing the OpenManus codeb
 - [ ] **Dependencies**: Are components loosely coupled?
 
 **Key Files to Reference**:
-- `app/flow/planning.py` - Main orchestration
-- `app/flow/review.py` - Doer-Critic pattern
-- `app/agent/reviewer.py` - New critic agent
+- `app/flow/planning.py` - Main orchestration (~500 lines)
+- `app/flow/review.py` - Doer-Critic pattern (~150 lines)
+- `app/agent/reviewer.py` - New critic agent (~150 lines)
+- `Rules/architecture_map.md` - **Complete component breakdown** (see Section "Detailed Component Breakdown" for what every component does)
 
 **Questions**:
 1. Does the PlanningFlow → Reviewer → TestRunner flow make architectural sense?
@@ -340,7 +341,7 @@ Please provide your review in this format:
 1. OPUS_REVIEW_SUMMARY.md - Detailed implementation summary
 2. TESTING_PLAN.md - Test execution strategy
 3. Rules/task.md - Master task list
-4. Rules/architecture_map.md - System architecture
+4. **Rules/architecture_map.md - System architecture with complete component breakdown** (⭐ Key reference for understanding what every component does)
 
 **Estimated Token Usage**:
 - This checklist: ~3K tokens

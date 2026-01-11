@@ -90,13 +90,22 @@ python -c "from app.tool.test_runner import TestRunner; t = TestRunner(); print(
 ### Phase 2: Unit Tests (Component Validation)
 **Purpose**: Test individual components in isolation
 
+**Available Tests** (10 core tests in repository root):
 ```bash
 # Run specific test files (fastest to slowest)
-pytest test_tool_selection.py -v
-pytest test_review_flow.py -v
-pytest test_integration.py -v
-pytest test_phase2_integration.py -v
-pytest test_prompt_enhancements.py -v
+pytest test_tool_selection.py -v       # Tool selection logic
+pytest test_review_flow.py -v          # ReviewFlow iteration mechanism
+pytest test_integration.py -v          # Basic agent-flow integration
+pytest test_phase2_integration.py -v   # Phase 2 features (verification, cost tracking)
+pytest test_prompt_enhancements.py -v  # Phase 3 prompt engineering features
+pytest test_integration_fixes.py -v    # Integration bug fixes
+pytest test_binary_search_manual.py -v # Reflection mechanism validation
+pytest test_real_webscraper.py -v      # Web scraping with browser tools
+pytest test_mcp_connection.py -v       # MCP connectivity
+pytest test_mcp_stdio.py -v            # MCP stdio mode
+
+# Additional sandbox tests (if needed):
+pytest tests/sandbox/ -v  # 4 tests: client, docker terminal, sandbox, manager
 ```
 
 **Expected Results**:
@@ -314,6 +323,28 @@ chmod +x run_tests.sh
 ---
 
 ## Test Coverage Gaps (Future Work)
+
+### Current Test Coverage (14 tests total)
+
+**What IS Covered**:
+- ✅ **Phase 2-3 Core Features**: PlanningFlow, ReviewFlow, Reviewer agent, TestRunner tool
+- ✅ **Integration Points**: Agent-flow coordination, tool selection
+- ✅ **Prompt Engineering**: CoT framework, reflection mechanism
+- ✅ **MCP Integration**: Connection, stdio mode
+- ✅ **Sandbox**: Client, docker terminal, sandbox manager
+- ✅ **Real-World Scenarios**: Binary search, web scraping
+
+**What Is NOT Covered** (gaps):
+- ❌ **Individual Tool Coverage**: No unit tests for each tool in app/tool/ (file operators, browser, search, etc.)
+- ❌ **All Agent Types**: No dedicated tests for data_analysis, swe, sandbox_agent
+- ❌ **LLM Edge Cases**: Token limits, rate limiting, error recovery
+- ❌ **Configuration Variants**: Different LLM providers (Azure, Bedrock, Ollama)
+- ❌ **Flow Factory**: Limited testing of dynamic flow creation
+- ❌ **Cost Tracking**: No validation of budget monitoring accuracy
+
+**Coverage Estimate**: Tests cover ~40-50% of codebase, focusing on **critical paths** (planning, review, agent coordination) rather than comprehensive unit coverage.
+
+**Recommendation**: Current tests validate Phase 2-3 implementations. For production, add unit tests for individual tools and agents.
 
 ### Missing Test Areas
 1. **Vision Capabilities** - No tests yet (tasks not implemented)

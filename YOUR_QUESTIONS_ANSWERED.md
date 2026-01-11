@@ -37,6 +37,12 @@
 
 **Current Blocker**: The CI/sandbox environment has insufficient disk space (94% full) to install all dependencies.
 
+**Test Coverage**: The repository has **14 test files** covering:
+- **10 tests in root**: Core features (integration, review flow, prompt enhancements, tool selection, MCP, binary search, web scraper)
+- **4 tests in tests/sandbox/**: Sandbox functionality (client, docker terminal, sandbox manager)
+
+**Note**: These tests focus on **Phase 2-3 implementations** (PlanningFlow, ReviewFlow, Reviewer, TestRunner). Not every single file has unit tests, but critical functionality and integration points are covered. See TESTING_PLAN.md for complete test inventory.
+
 **How to Run Tests** (when ready):
 ```bash
 # In your local environment:
@@ -46,7 +52,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 cp config/config.example.toml config/config.toml
 # Edit config.toml with your API key
-./run_tests.sh
+./run_tests.sh  # Runs 10 core tests (smoke → unit → integration)
+# For sandbox tests: pytest tests/sandbox/ -v
 ```
 
 **Alternative If You Can't Run Tests**:
