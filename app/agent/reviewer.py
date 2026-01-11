@@ -11,13 +11,11 @@ from typing import Optional
 
 from pydantic import Field
 
-from app.agent.base import BaseAgent
 from app.agent.toolcall import ToolCallAgent
-from app.llm import LLM
 from app.logger import logger
-from app.schema import AgentState, Message
 from app.tool import ToolCollection
 from app.tool.test_runner import TestRunner
+
 
 REVIEWER_SYSTEM_PROMPT = """You are a senior software auditor and code reviewer with expertise in:
 - Logic correctness and edge case analysis

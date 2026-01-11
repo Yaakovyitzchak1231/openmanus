@@ -4,12 +4,12 @@ Monitors API token usage and costs with OpenRouter pricing.
 """
 
 import json
-import os
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional
 
 from app.logger import logger
+
 
 # OpenRouter pricing (per 1M tokens) - updated as of Jan 2025
 OPENROUTER_PRICING = {

@@ -1,6 +1,6 @@
 # OpenManus Testing Plan & Execution Guide
 
-**Date**: January 11, 2026  
+**Date**: January 11, 2026
 **Purpose**: Define testing strategy and execution responsibilities for validating Phase 1-3 implementations.
 
 ---
@@ -296,28 +296,28 @@ chmod +x run_tests.sh
 ### Common Issues & Solutions
 
 #### 1. Import Errors (ModuleNotFoundError)
-**Symptom**: `ModuleNotFoundError: No module named 'pydantic'`  
-**Cause**: Dependencies not installed  
+**Symptom**: `ModuleNotFoundError: No module named 'pydantic'`
+**Cause**: Dependencies not installed
 **Solution**: `pip install -r requirements.txt`
 
 #### 2. Configuration Errors
-**Symptom**: `FileNotFoundError: config/config.toml`  
-**Cause**: Config file not created  
+**Symptom**: `FileNotFoundError: config/config.toml`
+**Cause**: Config file not created
 **Solution**: `cp config/config.example.toml config/config.toml`
 
 #### 3. API Key Errors
-**Symptom**: `AuthenticationError` or `InvalidAPIKey`  
-**Cause**: Invalid/missing API key in config  
+**Symptom**: `AuthenticationError` or `InvalidAPIKey`
+**Cause**: Invalid/missing API key in config
 **Solution**: Add valid API key to config/config.toml
 
 #### 4. Timeout Errors
-**Symptom**: `TimeoutError` in LLM calls  
-**Cause**: Network issues or model overload  
+**Symptom**: `TimeoutError` in LLM calls
+**Cause**: Network issues or model overload
 **Solution**: Increase timeout in config, retry, or use different model
 
 #### 5. Test Runner Errors
-**Symptom**: TestRunner tool fails to find pytest  
-**Cause**: pytest not in system path  
+**Symptom**: TestRunner tool fails to find pytest
+**Cause**: pytest not in system path
 **Solution**: Ensure pytest installed: `pip install pytest`
 
 ---

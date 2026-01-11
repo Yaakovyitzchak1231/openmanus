@@ -9,7 +9,6 @@ import asyncio
 
 from app.agent.manus import Manus
 from app.flow.flow_factory import FlowFactory, FlowType
-from app.logger import logger
 
 
 async def test_webscraper_with_reflection():

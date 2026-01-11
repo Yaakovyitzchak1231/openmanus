@@ -10,6 +10,7 @@ from app.tool.test_runner import TestRunner
 from app.tool.tool_collection import ToolCollection
 from app.tool.web_search import WebSearch
 
+
 __all__ = [
     "BaseTool",
     "Bash",
