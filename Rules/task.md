@@ -1,0 +1,137 @@
+# OpenManus → Opus 4.5 Replication - Master Task List
+
+## Phase 1: Preparation and Research ✅ COMPLETE
+
+- [x] Study Opus 4.5's orchestrator logic and multi-stage reasoning
+- [x] Set up and familiarize with OpenManus repo
+- [x] Configure LLM (OpenRouter + Daytona)
+- [x] Test baseline runs - **SUCCESSFUL**: 6,336 tokens
+- [x] Document repo structure (architecture_map.md)
+
+## Phase 2: Core Implementation ✅ COMPLETE
+
+- [x] Enhanced PlanningFlow with CoT decomposition (5-10 steps)
+- [x] Added verification loop with 3-retry capability
+- [x] Integrated cost tracking into orchestrator
+- [x] Implemented high-effort mode (20→50 max_steps)
+- [x] Created Reviewer agent and ReviewFlow
+- [x] Integrated ReviewFlow into run_flow.py with config toggle
+- [x] Tested self-correction with factorial task - **SUCCESSFUL**
+
+## Phase 3: Prompt Engineering ✅ COMPLETE
+
+- [x] Enhanced Manus system prompt with 6-step CoT framework
+- [x] Enhanced Reviewer prompt with systematic analysis checklist
+- [x] Added self-reflection mechanism (every 5 steps in high-effort mode)
+- [x] Tested reflection with real web scraper task - **VERIFIED**
+- [x] Run manual verification: binary search before/after test - **VERIFIED ✅**
+  - Confirmed reflection at step 5
+  - Observed systematic code development
+  - Edge case handling with comments
+  - Error validation present
+- [ ] Optional: Full REST API reflection effectiveness test
+
+## Phase 3 Remaining: Advanced Enhancements (OPTION A - Complete Original Vision)
+
+**Resume After Weekend**: Continue with full implementation of remaining Phase 3 features
+
+### 🛠️ Tool Integration & MCP Enhancement
+
+- [ ] **Extend Built-in Tools**
+  - [ ] Create test_runner.py for automated pytest execution
+  - [ ] Integrate test runner into Reviewer agent workflow
+  - [ ] Add vision capabilities via [llm.vision] config in config.toml
+  - [ ] Test vision with image-based tasks
+- [ ] **Context-Aware Tool Selector**
+  - [ ] Create app/flow/tool_selector.py
+  - [ ] Implement logic: "search" → search tools, "file" → editor tools
+  - [ ] Integrate into PlanningFlow._execute_step()
+  - [ ] Test with multi-tool tasks
+- [ ] **MCP Server Configuration**
+  - [ ] Configure filesystem MCP server in config.toml
+  - [ ] Configure brave-search MCP server (if available)
+  - [ ] Test multiple MCP servers running simultaneously
+  - [ ] Add MCP tool discovery logging
+
+### 🏗️ Hierarchical Orchestrator (Complex - High Value)
+
+- [ ] **Design & Planning**
+  - [ ] Design task graph structure (consider using networkx)
+  - [ ] Define sub-agent types: CodeExecutor, SearchAgent, DataAnalysisAgent
+  - [ ] Plan branching/merging logic
+- [ ] **Implementation**
+  - [ ] Create app/flow/hierarchical.py
+  - [ ] Implement HierarchicalFlow class
+  - [ ] Add dynamic sub-agent spawning based on task type
+  - [ ] Create app/agent/synthesizer.py for output merging
+- [ ] **Integration**
+  - [ ] Add FlowType.HIERARCHICAL to flow_factory.py
+  - [ ] Register HierarchicalFlow in FlowFactory
+  - [ ] Add config toggle: use_hierarchical_flow
+- [ ] **Testing**
+  - [ ] Test with complex branching scenario
+  - [ ] Verify parallel execution works
+  - [ ] Test synthesizer merges outputs correctly
+
+### 🔄 External Feedback Loops (HITL)
+
+- [ ] **Human-in-the-Loop Integration**
+  - [ ] Add HITL pause in PlanningFlow after step completion
+  - [ ] Use input() for user feedback collection
+  - [ ] Feed user feedback back to agent for next iteration
+  - [ ] Add config toggle: enable_hitl in config.toml
+- [ ] **Feedback Logging**
+  - [ ] Create app/tool/feedback_logger.py
+  - [ ] Set up SQLite database for feedback storage
+  - [ ] Log HITL corrections and error patterns
+  - [ ] Test feedback retrieval and analysis
+- [ ] **Testing**
+  - [ ] Test HITL with intentionally buggy code
+  - [ ] Verify feedback improves output quality
+  - [ ] Test feedback database queries
+
+### ⚡ Performance Optimizations
+
+- [ ] **Caching Implementation**
+  - [ ] Add functools.lru_cache for sub-task outputs
+  - [ ] Implement hash-based caching in PlanningFlow
+  - [ ] Test cache hit/miss rates
+  - [ ] Verify caching reduces redundant LLM calls
+- [ ] **Monitoring & Metrics**
+  - [ ] Create app/utils/metrics.py
+  - [ ] Track tokens/step, latency, success rate
+  - [ ] Add logging export functionality
+  - [ ] Set up metrics dashboard (optional)
+- [ ] **Optimization Features**
+  - [ ] Add early-stop thresholds (improvement < 5%)
+  - [ ] Implement asyncio.gather() for parallel sub-agents
+  - [ ] Add timeouts to tool calls (browser, search)
+  - [ ] Test performance improvements
+
+## Phase 4: Testing and Iteration
+
+- [ ] **Benchmarking**
+  - [ ] Set up HumanEval or custom coding benchmark suite
+  - [ ] Run benchmarks on current implementation
+  - [ ] Compare results against Opus 4.5 (if accessible)
+  - [ ] Log results to benchmarks/results.json
+  - [ ] Analyze failures and iterate
+- [ ] **Integration & Documentation**
+  - [ ] Commit all changes to git with proper tagging
+  - [ ] Test full flows with run_flow.py
+  - [ ] Add cost monitoring dashboard
+  - [ ] Document final system architecture
+  - [ ] Create comprehensive usage guide
+  - [ ] Write README with examples
+
+## Optional/Low Priority
+
+- [ ] RL-based tuning (cloud GPU required, budget permitting)
+- [ ] Multi-LLM integration (task-based model routing)
+- [ ] Scalability testing (max_steps 100+)
+
+## Current Status
+
+**Last Completed**: Phase 3 Prompt Engineering
+**In Progress**: Manual verification test (binary search)
+**Next Up**: Choose next Phase 3 enhancement or move to Phase 4
