@@ -58,6 +58,10 @@ If any part is unclear (e.g., MCP config shape, planning schema, or visualizatio
 - **Test Framework:** Use `pytest` for all tests; install with `pip install pytest pytest-asyncio`.
 - **Running Tests:** Execute `pytest -v` from repo root; use `-k <pattern>` to filter tests.
 - **Test Location:** Integration tests in root (`test_*.py`), unit tests under `tests/` subdirectories.
+- **Test Isolation:** When creating new tests for development/validation:
+  - Create a separate folder (e.g., `tests/copilot_tests/` or `/tmp/test_workspace/`) for your test files
+  - Create a new branch before running any tests to isolate changes
+  - Clean up test artifacts after validation
 - **Pre-commit Hooks:** Install via `pre-commit install`; runs `black`, `isort`, `autoflake` on commit.
 - **Code Formatting:**
   - Black for Python formatting (line length 88)
