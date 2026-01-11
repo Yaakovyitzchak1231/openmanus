@@ -59,7 +59,7 @@ If any part is unclear (e.g., MCP config shape, planning schema, or visualizatio
 - **Running Tests:** Execute `pytest -v` from repo root; use `-k <pattern>` to filter tests.
 - **Test Location:** Integration tests in root (`test_*.py`), unit tests under `tests/` subdirectories.
 - **Pre-commit Hooks:** Install via `pre-commit install`; runs `black`, `isort`, `autoflake` on commit.
-- **Code Formatting:** 
+- **Code Formatting:**
   - Black for Python formatting (line length 88)
   - isort with `--profile black` for import sorting
   - Remove unused imports/variables with autoflake

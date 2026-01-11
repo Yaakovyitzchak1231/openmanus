@@ -26,7 +26,7 @@ async def test_stdio_connection():
 
     try:
         exit_stack = AsyncExitStack()
-        transport = await exit_stack.enter_async_context(stdio_client(params))
+        await exit_stack.enter_async_context(stdio_client(params))
         print("✅ Connection successful!")
         await exit_stack.aclose()
     except FileNotFoundError as e:
