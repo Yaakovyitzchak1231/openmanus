@@ -10,7 +10,6 @@ from app.agent.manus import Manus
 from app.config import config
 from app.flow.flow_factory import FlowFactory, FlowType
 from app.flow.review import ReviewFlow
-from app.logger import logger
 
 
 async def test_integration():

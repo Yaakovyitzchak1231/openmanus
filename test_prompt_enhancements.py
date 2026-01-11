@@ -10,9 +10,7 @@ Validates that:
 import asyncio
 
 from app.agent.manus import Manus
-from app.agent.reviewer import Reviewer
 from app.config import config
-from app.logger import logger
 from app.prompt.manus import NEXT_STEP_PROMPT, SYSTEM_PROMPT
 
 

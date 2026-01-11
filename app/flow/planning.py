@@ -348,7 +348,7 @@ class PlanningFlow(BaseFlow):
             tool_selection_hint = self._format_tool_selection_hint(executor, step_text)
             if tool_selection_hint:
                 step_prompt += f"\n{tool_selection_hint}\n"
-            
+
             step_prompt += "Please execute this step using the appropriate tools. When done, provide a summary of what you accomplished.\n"
 
             # Use agent.run() to execute the step
@@ -586,7 +586,7 @@ class PlanningFlow(BaseFlow):
         Returns:
             Formatted tool selection hint or empty string if no tools available
         """
-        if not hasattr(agent, 'available_tools') or not agent.available_tools:
+        if not hasattr(agent, "available_tools") or not agent.available_tools:
             return ""
 
         tools_desc = []

@@ -12,7 +12,6 @@ import asyncio
 
 from app.agent.manus import Manus
 from app.flow.review import ReviewFlow
-from app.logger import logger
 
 
 async def test_phase2_integration():
