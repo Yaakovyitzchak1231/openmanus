@@ -20,6 +20,7 @@ setup(
         "tenacity~=9.0.0",
         "pyyaml~=6.0.2",
         "loguru~=0.7.3",
+        "structlog~=25.4.0",
         "numpy",
         "datasets>=3.2,<3.5",
         "html2text~=2024.2.26",
@@ -33,6 +34,7 @@ setup(
         "aiofiles~=24.1.0",
         "pydantic_core>=2.27.2,<2.28.0",
         "colorama~=0.4.6",
+        "daytona==0.21.8",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -38,8 +38,12 @@ if daytona_config.target:
 else:
     logger.warning("No Daytona target found in environment variables")
 
-daytona = Daytona(daytona_config)
-logger.info("Daytona client initialized")
+def _get_daytona_client() -> Daytona:
+    if not daytona_config.api_key:
+        raise RuntimeError(
+            "Daytona API key or JWT token is required. Set DAYTONA_API_KEY or DAYTONA_JWT_TOKEN."
+        )
+    return Daytona(daytona_config)
 
 
 async def get_or_start_sandbox(sandbox_id: str):
@@ -48,6 +52,7 @@ async def get_or_start_sandbox(sandbox_id: str):
     logger.info(f"Getting or starting sandbox with ID: {sandbox_id}")
 
     try:
+        daytona = _get_daytona_client()
         sandbox = daytona.get(sandbox_id)
 
         # Check if sandbox needs to be started
@@ -137,6 +142,7 @@ def create_sandbox(password: str, project_id: str = None):
     )
 
     # Create the sandbox
+    daytona = _get_daytona_client()
     sandbox = daytona.create(params)
     logger.info(f"Sandbox created with ID: {sandbox.id}")
 
@@ -153,6 +159,7 @@ async def delete_sandbox(sandbox_id: str):
 
     try:
         # Get the sandbox
+        daytona = _get_daytona_client()
         sandbox = daytona.get(sandbox_id)
 
         # Delete the sandbox
