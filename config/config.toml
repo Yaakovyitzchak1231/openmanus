@@ -1,0 +1,122 @@
+# OpenManus → Opus 4.5 Replication Configuration
+# This config enables OpenRouter multi-LLM testing with $20 budget tracking
+
+# Global LLM configuration - OpenRouter
+[llm]
+model = "openai/gpt-4o-mini"              # Primary model for testing (cost-effective)
+base_url = "https://openrouter.ai/api/v1"  # OpenRouter API endpoint
+api_key = "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"   # Replace with your OpenRouter API key
+max_tokens = 8192                          # Maximum tokens in response
+temperature = 0.0                          # Controls randomness (0 = deterministic)
+
+# Optional: Vision model configuration (for image-related tasks)
+[llm.vision]
+model = "openai/gpt-4o-mini"               # Vision model
+base_url = "https://openrouter.ai/api/v1"
+api_key = "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"
+max_tokens = 8192
+temperature = 0.0
+
+# Budget Management (Phase 1.5)
+[budget]
+max_cost_usd = 20.0                        # Total budget limit (informational only)
+current_spend = 0.0                        # Track current spend (updated by cost_tracker.py)
+warn_at_thresholds = [10.0, 15.0, 18.0]    # Warning points (no hard limits)
+
+# Agent Configuration (Phase 3)
+[agent]
+high_effort_mode = true                    # Enable for max_steps 30-50 (default: 20)
+max_steps_normal = 20                      # Normal mode iteration limit
+max_steps_high_effort = 50                 # High-effort mode iteration limit
+enable_reflection = true                   # Add reflection prompts every 5 steps in high-effort mode
+
+# Multi-Agent Flow Configuration (Phase 4)
+[runflow]
+use_data_analysis_agent = false            # Existing: Data analysis specialist
+use_reviewer_agent = false                 # Phase 2: Enable Doer-Critic self-correction loop (max 3 iterations)
+use_hierarchical_flow = false              # NEW: Enable orchestrator-worker pattern with sub-agents
+enable_hitl = false                        # NEW: Enable Human-in-the-Loop verification pauses
+max_review_iterations = 3                  # Max Doer-Critic iterations per step
+
+# MCP (Model Context Protocol) Configuration
+[mcp]
+server_reference = "app.mcp.server"        # Default server module reference
+
+# ==========================================
+# MCP Server Configuration
+# ==========================================
+# Users can easily add custom MCP servers by following this pattern:
+#
+# [mcp.servers.YOUR_SERVER_NAME]
+# type = "stdio"                    # Connection type: "stdio" or "sse"
+# command = "npx"                   # Command to run the MCP server
+# args = ["-y", "package-name"]     # Command arguments (array)
+# env = { API_KEY = "..." }         # Optional: Environment variables (dict)
+#
+# The system automatically discovers and connects to all configured servers.
+# Each server's tools become available to the agent at runtime.
+
+# Example 1: Filesystem server (allows file operations in specified directories)
+[mcp.servers.filesystem]
+type = "stdio"
+command = "npx"
+args = [
+    "-y",
+    "@modelcontextprotocol/server-filesystem",
+    # Add/remove directories below - the agent can access files in these paths:
+    "c:/Users/jacob/OneDrive/Desktop/OpenManus_Antigravity/openmanus",
+    "c:/Users/jacob/Documents",
+    "c:/Users/jacob/OneDrive/Desktop"  # Fixed: OneDrive Desktop path
+]
+
+# Example 2: Brave Search server (uncomment and add API key to enable)
+# Get API key from: https://brave.com/search/api/
+# [mcp.servers.brave-search]
+# type = "stdio"
+# command = "npx"
+# args = ["-y", "@modelcontextprotocol/server-brave-search"]
+# env = { BRAVE_API_KEY = "your_api_key_here" }
+
+# Example 3: GitHub server (uncomment and add token to enable)
+# Create token at: https://github.com/settings/tokens
+# [mcp.servers.github]
+# type = "stdio"
+# command = "npx"
+# args = ["-y", "@modelcontextprotocol/server-github"]
+# env = { GITHUB_TOKEN = "your_github_token_here" }
+
+# Example 4: Custom Python MCP server
+# [mcp.servers.my-custom-server]
+# type = "stdio"
+# command = "python"
+# args = ["path/to/my_mcp_server.py", "--option", "value"]
+
+# Browser Configuration (Optional)
+[browser]
+headless = true                            # Run browser in headless mode
+disable_security = true                    # Disable security features for automation
+# chrome_instance_path = ""                # Path to Chrome instance (optional)
+
+# Search Engine Configuration (Optional)
+[search]
+engine = "Google"                          # Primary search engine
+fallback_engines = ["DuckDuckGo", "Baidu", "Bing"]
+retry_delay = 60                           # Seconds before retrying after rate limits
+max_retries = 3                            # Max retry attempts
+lang = "en"                                # Language code
+country = "us"                             # Country code
+
+# Daytona Sandbox Configuration (Optional - for code execution in isolated environment)
+[daytona]
+daytona_api_key = "dtn_c3b7707c230b5e0332c2e915c61e9ebdd2f073919d45d11d556ba23eb519ce1a"
+daytona_server_url = "https://app.daytona.io/api"
+daytona_target = "us"
+daytona_sandbox_image = "whitezxj/sandbox:0.1.0"
+VNC_password = "123456"
+
+# Multi-LLM Model Routing (Phase 9 - Optional)
+# Map task types to specific models for optimal performance
+[agent.model_routing]
+# coding = "deepseek/deepseek-coder"       # CodeLlama/DeepSeek for coding tasks
+# reasoning = "anthropic/claude-3.5-sonnet" # Claude for complex reasoning
+# search = "openai/gpt-4o-mini"            # GPT-4o-mini for search/general tasks

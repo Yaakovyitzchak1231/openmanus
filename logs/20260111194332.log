@@ -1,0 +1,2 @@
+2026-01-11 19:43:47.183 | INFO     | app.agent.manus:initialize_helper:75 - High-effort mode enabled: max_steps=50
+2026-01-11 19:43:47.185 | INFO     | app.tool.mcp:_resolve_npx_path:77 - Resolved npx to: C:\Program Files\nodejs\npx.CMD

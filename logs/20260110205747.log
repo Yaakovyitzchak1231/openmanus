@@ -1,0 +1,2 @@
+2026-01-10 20:58:04.166 | INFO     | app.agent.manus:initialize_helper:75 - High-effort mode enabled: max_steps=50
+2026-01-10 20:58:04.168 | INFO     | app.tool.mcp:disconnect:194 - Disconnected from all MCP servers

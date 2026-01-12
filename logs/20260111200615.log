@@ -1,0 +1,3 @@
+2026-01-11 20:06:37.953 | INFO     | __main__:test_manus_init:11 - Creating Manus agent using factory method...
+2026-01-11 20:06:38.767 | INFO     | app.agent.manus:initialize_helper:75 - High-effort mode enabled: max_steps=50
+2026-01-11 20:06:38.778 | INFO     | app.tool.mcp:_resolve_npx_path:77 - Resolved npx to: C:\Program Files\nodejs\npx.CMD

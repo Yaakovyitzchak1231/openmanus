@@ -1,0 +1,289 @@
+2026-01-09 15:35:37.262 | INFO     | app.agent.manus:initialize_helper:75 - High-effort mode enabled: max_steps=50
+2026-01-09 15:35:37.266 | INFO     | app.flow.planning:_create_initial_plan:139 - Creating initial plan with ID: plan_1767990937
+2026-01-09 15:35:41.644 | INFO     | app.llm:update_token_count:245 - Token usage: Input=585, Completion=171, Cumulative Input=585, Cumulative Completion=171, Total=756, Cumulative Total=756
+2026-01-09 15:35:41.674 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 585in + 171out = $0.0002 | Total: $0.11/$20.0
+2026-01-09 15:35:41.682 | INFO     | app.flow.planning:_create_initial_plan:217 - Plan creation result: Plan created successfully with ID: plan_1767990937
+
+Plan: Fetch Top 5 Hacker News Posts (ID: plan_1767990937)
+==========================================================
+
+Progress: 0/10 steps completed (0.0%)
+Status: 0 completed, 0 in progress, 0 blocked, 10 not started
+
+Steps:
+0. [ ] Research Hacker News API documentation to understand the endpoint and response structure
+1. [ ] Set up Python environment and install the requests library if not already installed
+2. [ ] Implement a function to make a GET request to the Hacker News API endpoint
+3. [ ] Add error handling to manage potential request failures (e.g., network issues, invalid responses)
+4. [ ] Parse the JSON response to extract the relevant data (title and URL) for each post
+5. [ ] Limit the results to the top 5 posts based on the response
+6. [ ] Format the extracted data into a list of dictionaries with keys 'title' and 'url'
+7. [ ] Return the list of dictionaries from the function
+8. [ ] Write unit tests to validate the function's behavior under normal and error conditions
+9. [ ] Document the function usage and any limitations
+
+2026-01-09 15:35:41.684 | INFO     | app.agent.base:run:145 - Executing step 1/50
+2026-01-09 15:35:42.565 | INFO     | app.llm:update_token_count:245 - Token usage: Input=2141, Completion=23, Cumulative Input=2726, Cumulative Completion=194, Total=2164, Cumulative Total=2920
+2026-01-09 15:35:42.589 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 2141in + 23out = $0.0003 | Total: $0.11/$20.0
+2026-01-09 15:35:42.590 | INFO     | app.agent.toolcall:think:87 - ✨ Manus's thoughts: 
+2026-01-09 15:35:42.590 | INFO     | app.agent.toolcall:think:88 - 🛠️ Manus selected 1 tools to use
+2026-01-09 15:35:42.591 | INFO     | app.agent.toolcall:think:92 - 🧰 Tools being prepared: ['browser_use']
+2026-01-09 15:35:42.591 | INFO     | app.agent.toolcall:think:95 - 🔧 Tool arguments: {"action":"web_search","query":"Hacker News API documentation"}
+2026-01-09 15:35:42.592 | INFO     | app.agent.toolcall:execute_tool:186 - 🔧 Activating tool: 'browser_use'...
+2026-01-09 15:35:54.791 | INFO     | app.tool.web_search:_try_all_engines:299 - 🔎 Attempting search with Google...
+2026-01-09 15:35:55.017 | INFO     | app.tool.web_search:_try_all_engines:299 - 🔎 Attempting search with Duckduckgo...
+2026-01-09 15:36:01.149 | INFO     | app.agent.toolcall:act:156 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Search results for 'Hacker News API documentation':
+
+1. Hacker News API - GitHub
+   URL: https://github.com/HackerNews/API
+   Description: Documentation and Samples for the Official HN API. Contribute to HackerNews/API development by creating an account on GitHub.
+   Content: GitHub - HackerNews/API: Documentation and Samples for the Official HN API Skip to content You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Reload to refresh your session. You switched accounts on another tab or window. Reload to refresh your session. Dismiss alert HackerNews / API Public Notifications You must be signed in to change notification settings Fork 715 Star 12.9k Documentation and Samples for the Official HN API License MIT license 12.9k stars 715 forks Branches Tags Activity Star Notifications You must be signed in to change notification settings HackerNews/API master Branches Tags Go to file Code Open more actions menu Folders and files Name Name Last commit message Last commit date Latest commit History 61 Commits LICENSE LICENSE README.md README.md View all files Repository files navigation Hacker News API Overview In partnership with Firebase , we're making the public Hacker News data available in near r...
+
+Metadata:
+- Total results: 1
+- Language: en
+- Country: us
+2026-01-09 15:36:01.150 | INFO     | app.agent.base:run:145 - Executing step 2/50
+2026-01-09 15:36:06.312 | INFO     | app.llm:update_token_count:245 - Token usage: Input=2701, Completion=30, Cumulative Input=5427, Cumulative Completion=224, Total=2731, Cumulative Total=5651
+2026-01-09 15:36:06.336 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 2701in + 30out = $0.0004 | Total: $0.11/$20.0
+2026-01-09 15:36:06.337 | INFO     | app.agent.toolcall:think:87 - ✨ Manus's thoughts: 
+2026-01-09 15:36:06.338 | INFO     | app.agent.toolcall:think:88 - 🛠️ Manus selected 1 tools to use
+2026-01-09 15:36:06.338 | INFO     | app.agent.toolcall:think:92 - 🧰 Tools being prepared: ['browser_use']
+2026-01-09 15:36:06.338 | INFO     | app.agent.toolcall:think:95 - 🔧 Tool arguments: {"action":"extract_content","goal":"Hacker News API documentation overview, endpoints, and response structure"}
+2026-01-09 15:36:06.339 | INFO     | app.agent.toolcall:execute_tool:186 - 🔧 Activating tool: 'browser_use'...
+2026-01-09 15:36:16.998 | INFO     | app.llm:update_token_count:245 - Token usage: Input=622, Completion=413, Cumulative Input=6049, Cumulative Completion=637, Total=1035, Cumulative Total=6686
+2026-01-09 15:36:17.022 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 622in + 413out = $0.0003 | Total: $0.11/$20.0
+2026-01-09 15:36:17.023 | INFO     | app.agent.toolcall:act:156 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Extracted from page:
+{'text': '# Hacker News API Documentation Overview\n\nThe Hacker News API provides a simple way to access the data from Hacker News. It is a RESTful API that allows developers to retrieve and interact with the content on Hacker News.\n\n## Endpoints\n\nThe main endpoints of the Hacker News API include:\n- **Top Stories**: `/v0/topstories.json` - Returns a list of the IDs of the top stories.\n- **New Stories**: `/v0/newstories.json` - Returns a list of the IDs of the new stories.\n- **Best Stories**: `/v0/beststories.json` - Returns a list of the IDs of the best stories.\n- **Item**: `/v0/item/{id}.json` - Returns the details of a specific item (story, comment, etc.) by its ID.\n- **User**: `/v0/user/{id}.json` - Returns the details of a specific user by their ID.\n\n## Response Structure\n\nThe responses from the API are in JSON format. For example, the response for an item might look like this:\n```json\n{\n  "by": "author",\n  "descendants": 10,\n  "id": 12345,\n  "score": 100,\n  "time": 1610000000,\n  "title": "Example Title",\n  "type": "story",\n  "url": "https://example.com"\n}\n```\n\nEach item includes fields such as `by` (the author), `descendants` (number of comments), `id` (item ID), `score` (points), `time` (timestamp), `title` (title of the story), `type` (type of item), and `url` (link to the story).', 'metadata': {'source': 'GitHub - HackerNews/API'}}
+
+2026-01-09 15:36:17.024 | INFO     | app.agent.base:run:145 - Executing step 3/50
+2026-01-09 15:36:32.554 | INFO     | app.llm:update_token_count:245 - Token usage: Input=3404, Completion=511, Cumulative Input=9453, Cumulative Completion=1148, Total=3915, Cumulative Total=10601
+2026-01-09 15:36:32.577 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 3404in + 511out = $0.0008 | Total: $0.11/$20.0
+2026-01-09 15:36:32.578 | INFO     | app.agent.toolcall:think:87 - ✨ Manus's thoughts: ### Summary of Accomplishments
+
+I have successfully researched the Hacker News API documentation and extracted key information regarding its endpoints and response structure. Here are the details:
+
+#### API Overview
+- The Hacker News API is a RESTful API that allows developers to access data from Hacker News.
+
+#### Main Endpoints
+1. **Top Stories**: `/v0/topstories.json` - Returns a list of the IDs of the top stories.
+2. **New Stories**: `/v0/newstories.json` - Returns a list of the IDs of the new stories.
+3. **Best Stories**: `/v0/beststories.json` - Returns a list of the IDs of the best stories.
+4. **Item**: `/v0/item/{id}.json` - Returns the details of a specific item (story, comment, etc.) by its ID.
+5. **User**: `/v0/user/{id}.json` - Returns the details of a specific user by their ID.
+
+#### Response Structure
+- The responses from the API are in JSON format. An example response for an item might look like this:
+  ```json
+  {
+    "by": "author",
+    "descendants": 10,
+    "id": 12345,
+    "score": 100,
+    "time": 1610000000,
+    "title": "Example Title",
+    "type": "story",
+    "url": "https://example.com"
+  }
+  ```
+- Each item includes fields such as `by`, `descendants`, `id`, `score`, `time`, `title`, `type`, and `url`.
+
+### Next Steps
+
+1. **Set Up Python Environment**: The next logical step is to set up the Python environment and install the `requests` library if it is not already installed. This will allow us to make HTTP requests to the Hacker News API.
+
+2. **Plan for Implementation**: After setting up the environment, I will implement a function to make a GET request to the Hacker News API endpoint.
+
+Let's proceed with setting up the Python environment and installing the `requests` library. I will execute this step now.
+2026-01-09 15:36:32.579 | INFO     | app.agent.toolcall:think:88 - 🛠️ Manus selected 1 tools to use
+2026-01-09 15:36:32.579 | INFO     | app.agent.toolcall:think:92 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 15:36:32.580 | INFO     | app.agent.toolcall:think:95 - 🔧 Tool arguments: {"code":"import subprocess\nimport sys\n\n# Check if requests is installed\ntry:\n    import requests\nexcept ImportError:\n    # If not installed, install requests\n    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'requests'])"}
+2026-01-09 15:36:32.580 | INFO     | app.agent.toolcall:execute_tool:186 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 15:37:00.775 | INFO     | app.agent.toolcall:act:156 - 🎯 Tool 'python_execute' completed its mission! Result: Observed output of cmd `python_execute` executed:
+{'observation': '', 'success': True}
+2026-01-09 15:37:00.776 | INFO     | app.agent.base:run:145 - Executing step 4/50
+2026-01-09 15:37:08.454 | INFO     | app.llm:update_token_count:245 - Token usage: Input=3946, Completion=234, Cumulative Input=13399, Cumulative Completion=1382, Total=4180, Cumulative Total=14781
+2026-01-09 15:37:08.481 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 3946in + 234out = $0.0007 | Total: $0.11/$20.0
+2026-01-09 15:37:08.482 | INFO     | app.agent.toolcall:think:87 - ✨ Manus's thoughts: ### Summary of Accomplishments
+
+I have successfully set up the Python environment and installed the `requests` library. This will enable us to make HTTP requests to the Hacker News API.
+
+### Next Steps
+
+1. **Implement a Function**: The next step is to implement a function that makes a GET request to the Hacker News API endpoint to fetch the top stories.
+
+2. **Add Error Handling**: After implementing the function, I will add error handling to manage potential request failures.
+
+Let's proceed with implementing the function to fetch the top stories from the Hacker News API.
+2026-01-09 15:37:08.483 | INFO     | app.agent.toolcall:think:88 - 🛠️ Manus selected 1 tools to use
+2026-01-09 15:37:08.483 | INFO     | app.agent.toolcall:think:92 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 15:37:08.483 | INFO     | app.agent.toolcall:think:95 - 🔧 Tool arguments: {"code":"import requests\n\ndef fetch_top_stories():\n    try:\n        # Make a GET request to the Hacker News API for top stories\n        response = requests.get('https://hacker-news.firebaseio.com/v0/topstories.json')\n        response.raise_for_status()  # Raise an error for bad responses\n        # Return the list of top story IDs\n        return response.json()\n    except requests.exceptions.RequestException as e:\n        print(f'Error fetching top stories: {e}')"}
+2026-01-09 15:37:08.484 | INFO     | app.agent.toolcall:execute_tool:186 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 15:37:36.430 | INFO     | app.agent.toolcall:act:156 - 🎯 Tool 'python_execute' completed its mission! Result: Observed output of cmd `python_execute` executed:
+{'observation': '', 'success': True}
+2026-01-09 15:37:36.430 | INFO     | app.agent.base:run:145 - Executing step 5/50
+2026-01-09 15:37:36.431 | INFO     | app.agent.manus:think:196 - 💭 Injected reflection prompt at step 5
+2026-01-09 15:37:47.345 | INFO     | app.llm:update_token_count:245 - Token usage: Input=4556, Completion=426, Cumulative Input=17955, Cumulative Completion=1808, Total=4982, Cumulative Total=19763
+2026-01-09 15:37:47.369 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 4556in + 426out = $0.0009 | Total: $0.11/$20.0
+2026-01-09 15:37:47.370 | INFO     | app.agent.toolcall:think:87 - ✨ Manus's thoughts: ### 1. Assess Current State
+- **Accomplishments**: I have successfully set up the Python environment, installed the `requests` library, and implemented a function to fetch the top stories from the Hacker News API.
+- **Remaining Work**: I still need to add error handling for potential request failures, parse the JSON response to extract relevant data, limit the results to the top 5 posts, and format the data into a list of dictionaries.
+- **Errors/Issues**: There are no errors or issues at this stage.
+
+### 2. Identify Next Action
+- **Next Step**: The most logical next step is to enhance the function by adding error handling and then testing it to ensure it works correctly.
+- **Information Gathering**: No additional information is needed at this point.
+- **Testing**: I will test the function after adding error handling.
+
+### 3. Select Tools
+- **Tools**: I will continue using the Python execution tool to modify the function and test it.
+
+### 4. Execute with Clarity
+- **Action Rationale**: Adding error handling will ensure that the function can gracefully manage any issues that arise during the API request, such as network errors or invalid responses. This is crucial for maintaining robustness in the application.
+- **Execution**: I will now modify the function to include error handling and then test it.
+
+Let's proceed with enhancing the function.
+2026-01-09 15:37:47.371 | INFO     | app.agent.toolcall:think:88 - 🛠️ Manus selected 1 tools to use
+2026-01-09 15:37:47.371 | INFO     | app.agent.toolcall:think:92 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 15:37:47.371 | INFO     | app.agent.toolcall:think:95 - 🔧 Tool arguments: {"code":"def fetch_top_stories():\n    try:\n        # Make a GET request to the Hacker News API for top stories\n        response = requests.get('https://hacker-news.firebaseio.com/v0/topstories.json')\n        response.raise_for_status()  # Raise an error for bad responses\n        # Return the list of top story IDs\n        return response.json()[:5]  # Limit to top 5 stories\n    except requests.exceptions.RequestException as e:\n        print(f'Error fetching top stories: {e}')\n        return []  # Return an empty list on error"}
+2026-01-09 15:37:47.372 | INFO     | app.agent.toolcall:execute_tool:186 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 15:38:15.390 | INFO     | app.agent.toolcall:act:156 - 🎯 Tool 'python_execute' completed its mission! Result: Observed output of cmd `python_execute` executed:
+{'observation': '', 'success': True}
+2026-01-09 15:38:15.390 | INFO     | app.agent.base:run:145 - Executing step 6/50
+2026-01-09 15:38:16.782 | INFO     | app.llm:update_token_count:245 - Token usage: Input=5013, Completion=28, Cumulative Input=22968, Cumulative Completion=1836, Total=5041, Cumulative Total=24804
+2026-01-09 15:38:16.805 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 5013in + 28out = $0.0008 | Total: $0.11/$20.0
+2026-01-09 15:38:16.806 | INFO     | app.agent.toolcall:think:87 - ✨ Manus's thoughts: 
+2026-01-09 15:38:16.806 | INFO     | app.agent.toolcall:think:88 - 🛠️ Manus selected 1 tools to use
+2026-01-09 15:38:16.806 | INFO     | app.agent.toolcall:think:92 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 15:38:16.807 | INFO     | app.agent.toolcall:think:95 - 🔧 Tool arguments: {"code":"# Test the fetch_top_stories function\nprint(fetch_top_stories())"}
+2026-01-09 15:38:16.807 | INFO     | app.agent.toolcall:execute_tool:186 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 15:38:21.384 | ERROR    | app.agent.toolcall:execute_tool:213 - ⚠️ Tool 'python_execute' encountered a problem: [Errno 4] Interrupted function call
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_real_webscraper.py", line 69, in <module>
+    asyncio.run(test_webscraper_with_reflection())
+    │       │   └ <function test_webscraper_with_reflection at 0x000001CE3264AB60>
+    │       └ <function run at 0x000001CE34527740>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_webscraper_with_reflection at 0x000001CE69BFD140>
+           │      └ <function Runner.run at 0x000001CE345C1C60>
+           └ <asyncio.runners.Runner object at 0x000001CE696992B0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task cancelling name='Task-1' coro=<test_webscraper_with_reflection() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_A...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x000001CE345BB7E0>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x000001CE696992B0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x000001CE345BB740>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000001CE345C1580>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x000001CE344F8360>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001CE6E22A680>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001CE6E22A680>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001CE6E22A680>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x000001CE6E22A680>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_real_webscraper.py", line 55, in test_webscraper_with_reflection
+    result = await flow.execute(prompt)
+                   │    │       └ 'Write a Python function to fetch the top 5 Hacker News posts.\n\nRequirements:\n1. Use requests library to fetch from HN API...
+                   │    └ <function PlanningFlow.execute at 0x000001CE69DB00E0>
+                   └ PlanningFlow(agents={'manus': Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple ...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\flow\planning.py", line 125, in execute
+    step_result = await self._execute_step(executor, step_info)
+                        │    │             │         └ {'text': 'Research Hacker News API documentation to understand the endpoint and response structure'}
+                        │    │             └ Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple tools including MCP-based tool...
+                        │    └ <function PlanningFlow._execute_step at 0x000001CE69DB02C0>
+                        └ PlanningFlow(agents={'manus': Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple ...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\flow\planning.py", line 351, in _execute_step
+    step_result = await executor.run(step_prompt)
+                        │        │   └ '\n            CURRENT PLAN STATUS:\n            Plan: Fetch Top 5 Hacker News Posts (ID: plan_1767990937)\n=================...
+                        │        └ <function ToolCallAgent.run at 0x000001CE386E0040>
+                        └ Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple tools including MCP-based tool...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\agent\toolcall.py", line 254, in run
+    return await super().run(request)
+                             └ '\n            CURRENT PLAN STATUS:\n            Plan: Fetch Top 5 Hacker News Posts (ID: plan_1767990937)\n=================...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\agent\base.py", line 146, in run
+    step_result = await self.step()
+                        │    └ <function ReActAgent.step at 0x000001CE38659A80>
+                        └ Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple tools including MCP-based tool...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\agent\react.py", line 38, in step
+    return await self.act()
+                 │    └ <function ToolCallAgent.act at 0x000001CE386E22A0>
+                 └ Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple tools including MCP-based tool...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\agent\toolcall.py", line 151, in act
+    result = await self.execute_tool(command)
+                   │    │            └ ChatCompletionMessageToolCall(id='call_Q4RwqwS78sFa1xp8QS1T1QLk', function=Function(arguments='{"code":"# Test the fetch_top_...
+                   │    └ <function ToolCallAgent.execute_tool at 0x000001CE386E27A0>
+                   └ Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple tools including MCP-based tool...
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\agent\toolcall.py", line 187, in execute_tool
+    result = await self.available_tools.execute(name=name, tool_input=args)
+                   │    │               │            │                └ {'code': '# Test the fetch_top_stories function\nprint(fetch_top_stories())'}
+                   │    │               │            └ 'python_execute'
+                   │    │               └ <function ToolCollection.execute at 0x000001CE386E2020>
+                   │    └ <app.tool.tool_collection.ToolCollection object at 0x000001CE6B44F9D0>
+                   └ Manus(name='Manus', description='A versatile agent that can solve various tasks using multiple tools including MCP-based tool...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\tool\tool_collection.py", line 32, in execute
+    result = await tool(**tool_input)
+                   │      └ {'code': '# Test the fetch_top_stories function\nprint(fetch_top_stories())'}
+                   └ PythonExecute(name='python_execute', description='Executes Python code string. Note: Only print outputs are visible, function...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\tool\base.py", line 118, in __call__
+    return await self.execute(**kwargs)
+                 │    │         └ {'code': '# Test the fetch_top_stories function\nprint(fetch_top_stories())'}
+                 │    └ <function PythonExecute.execute at 0x000001CE69CEEE80>
+                 └ PythonExecute(name='python_execute', description='Executes Python code string. Note: Only print outputs are visible, function...
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\tool\python_execute.py", line 57, in execute
+    with multiprocessing.Manager() as manager:
+         │               └ <bound method BaseContext.Manager of <multiprocessing.context.DefaultContext object at 0x000001CE38172510>>
+         └ <module 'multiprocessing' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\multiprocessing\\__init__...
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\context.py", line 57, in Manager
+    m.start()
+    │ └ <function BaseManager.start at 0x000001CE6E074680>
+    └ <multiprocessing.managers.SyncManager object at 0x000001CE6BB38510>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\managers.py", line 569, in start
+    self._address = reader.recv()
+    │    │          │      └ <function _ConnectionBase.recv at 0x000001CE5F235120>
+    │    │          └ <multiprocessing.connection.PipeConnection object at 0x000001CE6E7BA690>
+    │    └ None
+    └ <multiprocessing.managers.SyncManager object at 0x000001CE6BB38510>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\connection.py", line 250, in recv
+    buf = self._recv_bytes()
+          │    └ <function PipeConnection._recv_bytes at 0x000001CE5F2354E0>
+          └ <multiprocessing.connection.PipeConnection object at 0x000001CE6E7BA690>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\connection.py", line 321, in _recv_bytes
+    waitres = _winapi.WaitForMultipleObjects(
+              │       └ <built-in function WaitForMultipleObjects>
+              └ <module '_winapi' (built-in)>
+
+InterruptedError: [Errno 4] Interrupted function call
+2026-01-09 15:38:22.150 | INFO     | app.agent.toolcall:act:156 - 🎯 Tool 'python_execute' completed its mission! Result: Error: ⚠️ Tool 'python_execute' encountered a problem: [Errno 4] Interrupted function call
+2026-01-09 15:38:22.150 | INFO     | app.agent.base:run:145 - Executing step 7/50
+2026-01-09 15:38:22.578 | INFO     | app.tool.mcp:disconnect:194 - Disconnected from all MCP servers

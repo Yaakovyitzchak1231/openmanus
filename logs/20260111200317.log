@@ -1,0 +1,429 @@
+2026-01-11 20:03:17.302 | INFO     | __main__:test_llm:9 - Initializing LLM...
+2026-01-11 20:03:18.291 | INFO     | __main__:test_llm:11 - Testing model: openai/gpt-4o-mini
+2026-01-11 20:03:18.291 | INFO     | __main__:test_llm:14 - Sending prompt: Hello, respond with exactly One word: SUCCESS
+2026-01-11 20:03:18.292 | ERROR    | app.llm:ask:496 - Unexpected error in ask
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 35, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x0000023000DC1440>
+    │       └ <function run at 0x0000023002EB77E0>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x0000023002F1ED40>
+           │      └ <function Runner.run at 0x0000023002F51D00>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x0000023002F4B880>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x0000023002F4B7E0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000023002F51620>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x0000023002E84400>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000230065DF070>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000230065DF070>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000230065DF070>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000230065DF070>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 17, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ 'Hello, respond with exactly One word: SUCCESS'
+                     │   └ <function LLM.ask at 0x0000023006C4E8E0>
+                     └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                 │    └ <function LLM.ask at 0x0000023006C4E660>
+                 └ <AsyncRetrying object at 0x23006ce36f0 (stop=<tenacity.stop.stop_after_attempt object at 0x0000023006AF70E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                   └ <function LLM.ask at 0x0000023006C4E660>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 413, in ask
+    messages = self.format_messages(messages, supports_images)
+               │    │               │         └ False
+               │    │               └ 'Hello, respond with exactly One word: SUCCESS'
+               │    └ <staticmethod(<function LLM.format_messages at 0x0000023006C4E480>)>
+               └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 363, in format_messages
+    raise TypeError(f"Unsupported message type: {type(message)}")
+                                                      └ 'H'
+
+TypeError: Unsupported message type: <class 'str'>
+2026-01-11 20:03:19.379 | ERROR    | app.llm:ask:496 - Unexpected error in ask
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 35, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x0000023000DC1440>
+    │       └ <function run at 0x0000023002EB77E0>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x0000023002F1ED40>
+           │      └ <function Runner.run at 0x0000023002F51D00>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x0000023002F4B880>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x0000023002F4B7E0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000023002F51620>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x0000023002E84400>
+    └ <Handle Task.task_wakeup()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle Task.task_wakeup()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle Task.task_wakeup()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle Task.task_wakeup()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 17, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ 'Hello, respond with exactly One word: SUCCESS'
+                     │   └ <function LLM.ask at 0x0000023006C4E8E0>
+                     └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                 │    └ <function LLM.ask at 0x0000023006C4E660>
+                 └ <AsyncRetrying object at 0x23006ce36f0 (stop=<tenacity.stop.stop_after_attempt object at 0x0000023006AF70E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                   └ <function LLM.ask at 0x0000023006C4E660>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 413, in ask
+    messages = self.format_messages(messages, supports_images)
+               │    │               │         └ False
+               │    │               └ 'Hello, respond with exactly One word: SUCCESS'
+               │    └ <staticmethod(<function LLM.format_messages at 0x0000023006C4E480>)>
+               └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 363, in format_messages
+    raise TypeError(f"Unsupported message type: {type(message)}")
+                                                      └ 'H'
+
+TypeError: Unsupported message type: <class 'str'>
+2026-01-11 20:03:20.654 | ERROR    | app.llm:ask:496 - Unexpected error in ask
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 35, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x0000023000DC1440>
+    │       └ <function run at 0x0000023002EB77E0>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x0000023002F1ED40>
+           │      └ <function Runner.run at 0x0000023002F51D00>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x0000023002F4B880>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x0000023002F4B7E0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000023002F51620>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x0000023002E84400>
+    └ <Handle Task.task_wakeup()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle Task.task_wakeup()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle Task.task_wakeup()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle Task.task_wakeup()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 17, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ 'Hello, respond with exactly One word: SUCCESS'
+                     │   └ <function LLM.ask at 0x0000023006C4E8E0>
+                     └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                 │    └ <function LLM.ask at 0x0000023006C4E660>
+                 └ <AsyncRetrying object at 0x23006ce36f0 (stop=<tenacity.stop.stop_after_attempt object at 0x0000023006AF70E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                   └ <function LLM.ask at 0x0000023006C4E660>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 413, in ask
+    messages = self.format_messages(messages, supports_images)
+               │    │               │         └ False
+               │    │               └ 'Hello, respond with exactly One word: SUCCESS'
+               │    └ <staticmethod(<function LLM.format_messages at 0x0000023006C4E480>)>
+               └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 363, in format_messages
+    raise TypeError(f"Unsupported message type: {type(message)}")
+                                                      └ 'H'
+
+TypeError: Unsupported message type: <class 'str'>
+2026-01-11 20:03:24.434 | ERROR    | app.llm:ask:496 - Unexpected error in ask
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 35, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x0000023000DC1440>
+    │       └ <function run at 0x0000023002EB77E0>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x0000023002F1ED40>
+           │      └ <function Runner.run at 0x0000023002F51D00>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x0000023002F4B880>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x0000023002F4B7E0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000023002F51620>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x0000023002E84400>
+    └ <Handle Task.task_wakeup()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle Task.task_wakeup()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle Task.task_wakeup()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle Task.task_wakeup()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 17, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ 'Hello, respond with exactly One word: SUCCESS'
+                     │   └ <function LLM.ask at 0x0000023006C4E8E0>
+                     └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                 │    └ <function LLM.ask at 0x0000023006C4E660>
+                 └ <AsyncRetrying object at 0x23006ce36f0 (stop=<tenacity.stop.stop_after_attempt object at 0x0000023006AF70E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                   └ <function LLM.ask at 0x0000023006C4E660>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 413, in ask
+    messages = self.format_messages(messages, supports_images)
+               │    │               │         └ False
+               │    │               └ 'Hello, respond with exactly One word: SUCCESS'
+               │    └ <staticmethod(<function LLM.format_messages at 0x0000023006C4E480>)>
+               └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 363, in format_messages
+    raise TypeError(f"Unsupported message type: {type(message)}")
+                                                      └ 'H'
+
+TypeError: Unsupported message type: <class 'str'>
+2026-01-11 20:03:25.773 | ERROR    | app.llm:ask:496 - Unexpected error in ask
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 35, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x0000023000DC1440>
+    │       └ <function run at 0x0000023002EB77E0>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x0000023002F1ED40>
+           │      └ <function Runner.run at 0x0000023002F51D00>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x0000023002F4B880>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x0000023002F4B7E0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000023002F51620>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x0000023002E84400>
+    └ <Handle Task.task_wakeup()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle Task.task_wakeup()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle Task.task_wakeup()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle Task.task_wakeup()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 17, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ 'Hello, respond with exactly One word: SUCCESS'
+                     │   └ <function LLM.ask at 0x0000023006C4E8E0>
+                     └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                 │    └ <function LLM.ask at 0x0000023006C4E660>
+                 └ <AsyncRetrying object at 0x23006ce36f0 (stop=<tenacity.stop.stop_after_attempt object at 0x0000023006AF70E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                   └ <function LLM.ask at 0x0000023006C4E660>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 413, in ask
+    messages = self.format_messages(messages, supports_images)
+               │    │               │         └ False
+               │    │               └ 'Hello, respond with exactly One word: SUCCESS'
+               │    └ <staticmethod(<function LLM.format_messages at 0x0000023006C4E480>)>
+               └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 363, in format_messages
+    raise TypeError(f"Unsupported message type: {type(message)}")
+                                                      └ 'H'
+
+TypeError: Unsupported message type: <class 'str'>
+2026-01-11 20:03:40.843 | ERROR    | app.llm:ask:496 - Unexpected error in ask
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 35, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x0000023000DC1440>
+    │       └ <function run at 0x0000023002EB77E0>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x0000023002F1ED40>
+           │      └ <function Runner.run at 0x0000023002F51D00>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x0000023002F4B880>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x0000023006AF6E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x0000023002F4B7E0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000023002F51620>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x0000023002E84400>
+    └ <Handle Task.task_wakeup()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle Task.task_wakeup()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle Task.task_wakeup()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle Task.task_wakeup()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 17, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ 'Hello, respond with exactly One word: SUCCESS'
+                     │   └ <function LLM.ask at 0x0000023006C4E8E0>
+                     └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                 │    └ <function LLM.ask at 0x0000023006C4E660>
+                 └ <AsyncRetrying object at 0x23006ce36f0 (stop=<tenacity.stop.stop_after_attempt object at 0x0000023006AF70E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x0000023006AF7620>, 'Hello, respond with exactly One word: SUCCESS')
+                   └ <function LLM.ask at 0x0000023006C4E660>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 413, in ask
+    messages = self.format_messages(messages, supports_images)
+               │    │               │         └ False
+               │    │               └ 'Hello, respond with exactly One word: SUCCESS'
+               │    └ <staticmethod(<function LLM.format_messages at 0x0000023006C4E480>)>
+               └ <app.llm.LLM object at 0x0000023006AF7620>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 363, in format_messages
+    raise TypeError(f"Unsupported message type: {type(message)}")
+                                                      └ 'H'
+
+TypeError: Unsupported message type: <class 'str'>

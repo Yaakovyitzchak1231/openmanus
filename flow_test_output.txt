@@ -1,0 +1,104 @@
+C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\pydantic\_internal\_config.py:345: UserWarning: Valid config keys have changed in V2:
+* 'underscore_attrs_are_private' has been removed
+  warnings.warn(message, UserWarning)
+Warning: Unsupported Python version 3.13.5.final.0, please use 3.11-3.13
+INFO     [browser_use] BrowserUse logging setup complete with level info
+INFO     [root] Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
+C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\pydantic\_internal\_config.py:345: UserWarning: Valid config keys have changed in V2:
+* 'underscore_attrs_are_private' has been removed
+  warnings.warn(message, UserWarning)
+2026-01-12T01:11:41.318406Z [info     ] Initializing Daytona sandbox configuration filename=sandbox.py func_name=<module> lineno=19
+2026-01-12T01:11:41.318754Z [info     ] Daytona API key configured successfully filename=sandbox.py func_name=<module> lineno=27
+2026-01-12T01:11:41.318995Z [info     ] Daytona server URL set to: https://app.daytona.io/api filename=sandbox.py func_name=<module> lineno=32
+2026-01-12T01:11:41.319150Z [info     ] Daytona target set to: us      filename=sandbox.py func_name=<module> lineno=37
+2026-01-12T01:11:41.320670Z [info     ] Daytona client initialized     filename=sandbox.py func_name=<module> lineno=42
+2026-01-11 20:11:41.713 | INFO     | __main__:test_planning_flow:10 - Initializing agents for PlanningFlow...
+2026-01-11 20:11:42.405 | INFO     | app.agent.manus:initialize_helper:75 - High-effort mode enabled: max_steps=50
+2026-01-11 20:11:42.408 | INFO     | app.tool.mcp:_resolve_npx_path:77 - Resolved npx to: C:\Program Files\nodejs\npx.CMD
+Secure MCP Filesystem Server running on stdio
+Failed to request initial roots from client: MCP error -32600: List roots not supported
+2026-01-11 20:11:44.951 | INFO     | app.tool.mcp:_initialize_and_list_tools:163 - Connected to server filesystem with tools: ['read_file', 'read_text_file', 'read_media_file', 'read_multiple_files', 'write_file', 'edit_file', 'create_directory', 'list_directory', 'list_directory_with_sizes', 'directory_tree', 'move_file', 'search_files', 'get_file_info', 'list_allowed_directories']
+2026-01-11 20:11:44.951 | INFO     | app.agent.manus:initialize_mcp_servers:109 - Connected to MCP server filesystem using command npx
+2026-01-11 20:11:44.951 | INFO     | app.agent.manus:initialize_mcp_servers:120 - \U0001f4e6 Discovered 14 tools from filesystem:
+2026-01-11 20:11:44.952 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_read_file: Read the complete contents of a file as text. DEPRECATED: Use read_text_file ins...
+2026-01-11 20:11:44.952 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_read_text_file: Read the complete contents of a file from the file system as text. Handles vario...
+2026-01-11 20:11:44.952 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_read_media_file: Read an image or audio file. Returns the base64 encoded data and MIME type. Only...
+2026-01-11 20:11:44.952 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_read_multiple_files: Read the contents of multiple files simultaneously. This is more efficient than ...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_write_file: Create a new file or completely overwrite an existing file with new content. Use...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_edit_file: Make line-based edits to a text file. Each edit replaces exact line sequences wi...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_create_directory: Create a new directory or ensure a directory exists. Can create multiple nested ...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_list_directory: Get a detailed listing of all files and directories in a specified path. Results...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_list_directory_with_sizes: Get a detailed listing of all files and directories in a specified path, includi...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_directory_tree: Get a recursive tree view of files and directories as a JSON structure. Each ent...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_move_file: Move or rename files and directories. Can move files between directories and ren...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_search_files: Recursively search for files and directories matching a pattern. The patterns sh...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_get_file_info: Retrieve detailed metadata about a file or directory. Returns comprehensive info...
+2026-01-11 20:11:44.953 | INFO     | app.agent.manus:initialize_mcp_servers:130 -   - mcp_filesystem_list_allowed_directories: Returns the list of directories that this server is allowed to access. Subdirect...
+2026-01-11 20:11:44.953 | INFO     | __main__:test_planning_flow:15 - Creating PlanningFlow via Factory...
+2026-01-11 20:11:44.954 | INFO     | __main__:test_planning_flow:18 - Flow created: PlanningFlow
+2026-01-11 20:11:44.954 | INFO     | __main__:test_planning_flow:22 - Testing initial plan creation...
+2026-01-11 20:11:44.954 | INFO     | app.flow.planning:_create_initial_plan:139 - Creating initial plan with ID: plan_1768180304
+2026-01-11 20:11:47.502 | INFO     | app.llm:update_token_count:245 - Token usage: Input=521, Completion=142, Cumulative Input=521, Cumulative Completion=142, Total=663, Cumulative Total=663
+2026-01-11 20:11:47.532 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 521in + 142out = $0.0002 | Total: $0.12/$20.0
+2026-01-11 20:11:47.533 | INFO     | app.flow.planning:_create_initial_plan:217 - Plan creation result: Plan created successfully with ID: plan_1768180304
+
+Plan: Write Hello World Program in Python (ID: plan_1768180304)
+================================================================
+
+Progress: 0/10 steps completed (0.0%)
+Status: 0 completed, 0 in progress, 0 blocked, 10 not started
+
+Steps:
+0. [ ] Set up Python environment (install Python if not already installed)
+1. [ ] Open a text editor or IDE (e.g., VSCode, PyCharm, or Notepad)
+2. [ ] Create a new file and name it 'hello_world.py'
+3. [ ] Write the code to print 'Hello, World!'
+4. [ ] Save the file
+5. [ ] Open a terminal or command prompt
+6. [ ] Navigate to the directory where 'hello_world.py' is saved
+7. [ ] Run the program using the command 'python hello_world.py'
+8. [ ] Verify that 'Hello, World!' is printed in the terminal
+9. [ ] Document the process and any issues encountered
+
+2026-01-11 20:11:47.611 | INFO     | app.tool.mcp:disconnect:224 - Disconnected from MCP server filesystem
+2026-01-11 20:11:47.612 | INFO     | app.tool.mcp:disconnect:233 - Disconnected from all MCP servers
+Traceback (most recent call last):
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_flow_simple.py", line 24, in test_planning_flow
+    logger.info(f"Initial plan created: {plan[:100]}...")
+                                         ~~~~^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_flow_simple.py", line 40, in <module>
+    asyncio.run(test_planning_flow())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_flow_simple.py", line 32, in test_planning_flow
+    print(f"\n\u274c PlanningFlow Initialization Test: FAILED - {str(e)}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\colorama\ansitowin32.py", line 47, in write
+    self.__convertor.write(text)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\colorama\ansitowin32.py", line 177, in write
+    self.write_and_convert(text)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\colorama\ansitowin32.py", line 205, in write_and_convert
+    self.write_plain_text(text, cursor, len(text))
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\colorama\ansitowin32.py", line 210, in write_plain_text
+    self.wrapped.write(text[start:end])
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 2: character maps to <undefined>

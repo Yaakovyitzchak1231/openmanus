@@ -1,0 +1,561 @@
+2026-01-11 20:04:30.160 | INFO     | __main__:test_llm:9 - Initializing LLM...
+2026-01-11 20:04:30.913 | INFO     | __main__:test_llm:11 - Testing model: openai/gpt-4o-mini
+2026-01-11 20:04:30.914 | INFO     | __main__:test_llm:16 - Sending prompt: [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+2026-01-11 20:04:30.916 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=16, Cumulative Completion=0, Total=16, Cumulative Total=16
+2026-01-11 20:04:30.943 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:04:31.289 | ERROR    | app.llm:ask:487 - OpenAI API error
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 37, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x00000293EF8E1440>
+    │       └ <function run at 0x00000293F19C7880>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x00000293F1A2ED40>
+           │      └ <function Runner.run at 0x00000293F1A61DA0>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x00000293F1A5B920>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x00000293F1A5B880>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000293F1A616C0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x00000293F19944A0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5BD27A0>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5BD27A0>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5BD27A0>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5BD27A0>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 19, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+                     │   └ <function LLM.ask at 0x00000293F575E980>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                 │    └ <function LLM.ask at 0x00000293F575E700>
+                 └ <AsyncRetrying object at 0x293f57ef5c0 (stop=<tenacity.stop.stop_after_attempt object at 0x00000293F56070E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                   └ <function LLM.ask at 0x00000293F575E700>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 456, in ask
+    response = await self.client.chat.completions.create(**params, stream=True)
+                     │    │      │    │           │        └ {'model': 'openai/gpt-4o-mini', 'messages': [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}], '...
+                     │    │      │    │           └ <function AsyncCompletions.create at 0x00000293F4CF1440>
+                     │    │      │    └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+                     │    │      └ <openai.resources.chat.chat.AsyncChat object at 0x00000293F6365400>
+                     │    └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2000, in create
+    return await self._post(
+                 │    └ <bound method AsyncAPIClient.post of <openai.AsyncOpenAI object at 0x00000293F56078C0>>
+                 └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1767, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+                 │    │       │        │            │                  └ openai.AsyncStream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+                 │    │       │        │            └ True
+                 │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers=NOT_GIVEN, max_retries=NOT_GIVEN, timeout=NOT_...
+                 │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+                 │    └ <function AsyncAPIClient.request at 0x00000293F466F380>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1461, in request
+    return await self._request(
+                 │    └ <function AsyncAPIClient._request at 0x00000293F466F420>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1562, in _request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x00000293F466C540>
+          └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:31.299 | ERROR    | app.llm:ask:493 - API error: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:32.316 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=32, Cumulative Completion=0, Total=16, Cumulative Total=32
+2026-01-11 20:04:32.359 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:04:32.501 | ERROR    | app.llm:ask:487 - OpenAI API error
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 37, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x00000293EF8E1440>
+    │       └ <function run at 0x00000293F19C7880>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x00000293F1A2ED40>
+           │      └ <function Runner.run at 0x00000293F1A61DA0>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x00000293F1A5B920>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x00000293F1A5B880>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000293F1A616C0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x00000293F19944A0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9C730>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9C730>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9C730>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9C730>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 19, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+                     │   └ <function LLM.ask at 0x00000293F575E980>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                 │    └ <function LLM.ask at 0x00000293F575E700>
+                 └ <AsyncRetrying object at 0x293f57ef5c0 (stop=<tenacity.stop.stop_after_attempt object at 0x00000293F56070E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                   └ <function LLM.ask at 0x00000293F575E700>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 456, in ask
+    response = await self.client.chat.completions.create(**params, stream=True)
+                     │    │      │    │           │        └ {'model': 'openai/gpt-4o-mini', 'messages': [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}], '...
+                     │    │      │    │           └ <function AsyncCompletions.create at 0x00000293F4CF1440>
+                     │    │      │    └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+                     │    │      └ <openai.resources.chat.chat.AsyncChat object at 0x00000293F6365400>
+                     │    └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2000, in create
+    return await self._post(
+                 │    └ <bound method AsyncAPIClient.post of <openai.AsyncOpenAI object at 0x00000293F56078C0>>
+                 └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1767, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+                 │    │       │        │            │                  └ openai.AsyncStream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+                 │    │       │        │            └ True
+                 │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers=NOT_GIVEN, max_retries=NOT_GIVEN, timeout=NOT_...
+                 │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+                 │    └ <function AsyncAPIClient.request at 0x00000293F466F380>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1461, in request
+    return await self._request(
+                 │    └ <function AsyncAPIClient._request at 0x00000293F466F420>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1562, in _request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x00000293F466C540>
+          └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:32.507 | ERROR    | app.llm:ask:493 - API error: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:33.682 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=48, Cumulative Completion=0, Total=16, Cumulative Total=48
+2026-01-11 20:04:33.718 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:04:33.807 | ERROR    | app.llm:ask:487 - OpenAI API error
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 37, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x00000293EF8E1440>
+    │       └ <function run at 0x00000293F19C7880>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x00000293F1A2ED40>
+           │      └ <function Runner.run at 0x00000293F1A61DA0>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x00000293F1A5B920>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x00000293F1A5B880>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000293F1A616C0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x00000293F19944A0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9DA50>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9DA50>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9DA50>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9DA50>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 19, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+                     │   └ <function LLM.ask at 0x00000293F575E980>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                 │    └ <function LLM.ask at 0x00000293F575E700>
+                 └ <AsyncRetrying object at 0x293f57ef5c0 (stop=<tenacity.stop.stop_after_attempt object at 0x00000293F56070E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                   └ <function LLM.ask at 0x00000293F575E700>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 456, in ask
+    response = await self.client.chat.completions.create(**params, stream=True)
+                     │    │      │    │           │        └ {'model': 'openai/gpt-4o-mini', 'messages': [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}], '...
+                     │    │      │    │           └ <function AsyncCompletions.create at 0x00000293F4CF1440>
+                     │    │      │    └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+                     │    │      └ <openai.resources.chat.chat.AsyncChat object at 0x00000293F6365400>
+                     │    └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2000, in create
+    return await self._post(
+                 │    └ <bound method AsyncAPIClient.post of <openai.AsyncOpenAI object at 0x00000293F56078C0>>
+                 └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1767, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+                 │    │       │        │            │                  └ openai.AsyncStream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+                 │    │       │        │            └ True
+                 │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers=NOT_GIVEN, max_retries=NOT_GIVEN, timeout=NOT_...
+                 │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+                 │    └ <function AsyncAPIClient.request at 0x00000293F466F380>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1461, in request
+    return await self._request(
+                 │    └ <function AsyncAPIClient._request at 0x00000293F466F420>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1562, in _request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x00000293F466C540>
+          └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:33.813 | ERROR    | app.llm:ask:493 - API error: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:36.554 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=64, Cumulative Completion=0, Total=16, Cumulative Total=64
+2026-01-11 20:04:36.579 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:04:36.691 | ERROR    | app.llm:ask:487 - OpenAI API error
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 37, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x00000293EF8E1440>
+    │       └ <function run at 0x00000293F19C7880>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x00000293F1A2ED40>
+           │      └ <function Runner.run at 0x00000293F1A61DA0>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x00000293F1A5B920>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x00000293F1A5B880>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000293F1A616C0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x00000293F19944A0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9F220>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9F220>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9F220>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5C9F220>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 19, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+                     │   └ <function LLM.ask at 0x00000293F575E980>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                 │    └ <function LLM.ask at 0x00000293F575E700>
+                 └ <AsyncRetrying object at 0x293f57ef5c0 (stop=<tenacity.stop.stop_after_attempt object at 0x00000293F56070E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                   └ <function LLM.ask at 0x00000293F575E700>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 456, in ask
+    response = await self.client.chat.completions.create(**params, stream=True)
+                     │    │      │    │           │        └ {'model': 'openai/gpt-4o-mini', 'messages': [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}], '...
+                     │    │      │    │           └ <function AsyncCompletions.create at 0x00000293F4CF1440>
+                     │    │      │    └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+                     │    │      └ <openai.resources.chat.chat.AsyncChat object at 0x00000293F6365400>
+                     │    └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2000, in create
+    return await self._post(
+                 │    └ <bound method AsyncAPIClient.post of <openai.AsyncOpenAI object at 0x00000293F56078C0>>
+                 └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1767, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+                 │    │       │        │            │                  └ openai.AsyncStream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+                 │    │       │        │            └ True
+                 │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers=NOT_GIVEN, max_retries=NOT_GIVEN, timeout=NOT_...
+                 │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+                 │    └ <function AsyncAPIClient.request at 0x00000293F466F380>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1461, in request
+    return await self._request(
+                 │    └ <function AsyncAPIClient._request at 0x00000293F466F420>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1562, in _request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x00000293F466C540>
+          └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:36.698 | ERROR    | app.llm:ask:493 - API error: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:41.145 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=80, Cumulative Completion=0, Total=16, Cumulative Total=80
+2026-01-11 20:04:41.175 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:04:41.285 | ERROR    | app.llm:ask:487 - OpenAI API error
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 37, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x00000293EF8E1440>
+    │       └ <function run at 0x00000293F19C7880>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x00000293F1A2ED40>
+           │      └ <function Runner.run at 0x00000293F1A61DA0>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x00000293F1A5B920>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x00000293F1A5B880>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000293F1A616C0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x00000293F19944A0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CA8A30>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CA8A30>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CA8A30>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CA8A30>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 19, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+                     │   └ <function LLM.ask at 0x00000293F575E980>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                 │    └ <function LLM.ask at 0x00000293F575E700>
+                 └ <AsyncRetrying object at 0x293f57ef5c0 (stop=<tenacity.stop.stop_after_attempt object at 0x00000293F56070E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                   └ <function LLM.ask at 0x00000293F575E700>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 456, in ask
+    response = await self.client.chat.completions.create(**params, stream=True)
+                     │    │      │    │           │        └ {'model': 'openai/gpt-4o-mini', 'messages': [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}], '...
+                     │    │      │    │           └ <function AsyncCompletions.create at 0x00000293F4CF1440>
+                     │    │      │    └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+                     │    │      └ <openai.resources.chat.chat.AsyncChat object at 0x00000293F6365400>
+                     │    └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2000, in create
+    return await self._post(
+                 │    └ <bound method AsyncAPIClient.post of <openai.AsyncOpenAI object at 0x00000293F56078C0>>
+                 └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1767, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+                 │    │       │        │            │                  └ openai.AsyncStream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+                 │    │       │        │            └ True
+                 │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers=NOT_GIVEN, max_retries=NOT_GIVEN, timeout=NOT_...
+                 │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+                 │    └ <function AsyncAPIClient.request at 0x00000293F466F380>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1461, in request
+    return await self._request(
+                 │    └ <function AsyncAPIClient._request at 0x00000293F466F420>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1562, in _request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x00000293F466C540>
+          └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:41.290 | ERROR    | app.llm:ask:493 - API error: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:44.815 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=96, Cumulative Completion=0, Total=16, Cumulative Total=96
+2026-01-11 20:04:44.842 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:04:44.957 | ERROR    | app.llm:ask:487 - OpenAI API error
+Traceback (most recent call last):
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 37, in <module>
+    asyncio.run(test_llm())
+    │       │   └ <function test_llm at 0x00000293EF8E1440>
+    │       └ <function run at 0x00000293F19C7880>
+    └ <module 'asyncio' from 'C:\\Users\\jacob\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           │      │   └ <coroutine object test_llm at 0x00000293F1A2ED40>
+           │      └ <function Runner.run at 0x00000293F1A61DA0>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<test_llm() running at C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_...
+           │    │     └ <function BaseEventLoop.run_until_complete at 0x00000293F1A5B920>
+           │    └ <ProactorEventLoop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x00000293F5606E40>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    │    └ <function BaseEventLoop.run_forever at 0x00000293F1A5B880>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000293F1A616C0>
+    └ <ProactorEventLoop running=True closed=False debug=False>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 2042, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x00000293F19944A0>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CAA620>()>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CAA620>()>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CAA620>()>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <_asyncio.TaskStepMethWrapper object at 0x00000293F5CAA620>()>
+
+  File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\test_llm_simple.py", line 19, in test_llm
+    response = await llm.ask(prompt)
+                     │   │   └ [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+                     │   └ <function LLM.ask at 0x00000293F575E980>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 189, in async_wrapped
+    return await copy(fn, *args, **kwargs)
+                 │    │    │       └ {}
+                 │    │    └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                 │    └ <function LLM.ask at 0x00000293F575E700>
+                 └ <AsyncRetrying object at 0x293f57ef5c0 (stop=<tenacity.stop.stop_after_attempt object at 0x00000293F56070E0>, wait=<tenacity....
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\tenacity\asyncio\__init__.py", line 114, in __call__
+    result = await fn(*args, **kwargs)
+                   │   │       └ {}
+                   │   └ (<app.llm.LLM object at 0x00000293F5607620>, [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}])
+                   └ <function LLM.ask at 0x00000293F575E700>
+
+> File "C:\Users\jacob\OneDrive\Desktop\OpenManus_Antigravity\openmanus\app\llm.py", line 456, in ask
+    response = await self.client.chat.completions.create(**params, stream=True)
+                     │    │      │    │           │        └ {'model': 'openai/gpt-4o-mini', 'messages': [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}], '...
+                     │    │      │    │           └ <function AsyncCompletions.create at 0x00000293F4CF1440>
+                     │    │      │    └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+                     │    │      └ <openai.resources.chat.chat.AsyncChat object at 0x00000293F6365400>
+                     │    └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+                     └ <app.llm.LLM object at 0x00000293F5607620>
+
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2000, in create
+    return await self._post(
+                 │    └ <bound method AsyncAPIClient.post of <openai.AsyncOpenAI object at 0x00000293F56078C0>>
+                 └ <openai.resources.chat.completions.completions.AsyncCompletions object at 0x00000293F63C1940>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1767, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+                 │    │       │        │            │                  └ openai.AsyncStream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+                 │    │       │        │            └ True
+                 │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers=NOT_GIVEN, max_retries=NOT_GIVEN, timeout=NOT_...
+                 │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+                 │    └ <function AsyncAPIClient.request at 0x00000293F466F380>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1461, in request
+    return await self._request(
+                 │    └ <function AsyncAPIClient._request at 0x00000293F466F420>
+                 └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+  File "C:\Users\jacob\AppData\Local\Programs\Python\Python313\Lib\site-packages\openai\_base_client.py", line 1562, in _request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x00000293F466C540>
+          └ <openai.AsyncOpenAI object at 0x00000293F56078C0>
+
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}
+2026-01-11 20:04:44.962 | ERROR    | app.llm:ask:493 - API error: Error code: 402 - {'error': {'message': 'Insufficient credits. Add more using https://openrouter.ai/settings/credits', 'code': 402}}

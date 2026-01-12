@@ -1,0 +1,2 @@
+2026-01-10 20:42:09.832 | INFO     | app.tool.test_runner:execute:65 - Running pytest: C:\Users\jacob\AppData\Local\Programs\Python\Python313\python.exe -m pytest tests/sandbox/test_client.py -v --tb=short
+2026-01-10 20:42:12.807 | WARNING  | app.tool.test_runner:execute:96 - Tests failed: tests/sandbox/test_client.py (exit code 1)

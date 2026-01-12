@@ -1,0 +1,40 @@
+2026-01-09 12:04:15.673 | WARNING  | __main__:main:25 - Processing your request...
+2026-01-09 12:04:15.674 | INFO     | app.agent.base:run:140 - Executing step 1/20
+2026-01-09 12:04:17.221 | INFO     | app.llm:update_token_count:243 - Token usage: Input=1344, Completion=33, Cumulative Input=1344, Cumulative Completion=33, Total=1377, Cumulative Total=1377
+2026-01-09 12:04:17.222 | INFO     | app.agent.toolcall:think:81 - ✨ Manus's thoughts: 
+2026-01-09 12:04:17.222 | INFO     | app.agent.toolcall:think:82 - 🛠️ Manus selected 1 tools to use
+2026-01-09 12:04:17.222 | INFO     | app.agent.toolcall:think:86 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 12:04:17.223 | INFO     | app.agent.toolcall:think:89 - 🔧 Tool arguments: {"code":"def hello_world():\n    print('Hello, World!')\n\nhello_world()"}
+2026-01-09 12:04:17.225 | INFO     | app.agent.toolcall:execute_tool:180 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 12:04:34.651 | INFO     | app.agent.toolcall:act:150 - 🎯 Tool 'python_execute' completed its mission! Result: Observed output of cmd `python_execute` executed:
+{'observation': 'Execution timeout after 5 seconds', 'success': False}
+2026-01-09 12:04:34.652 | INFO     | app.agent.base:run:140 - Executing step 2/20
+2026-01-09 12:04:35.785 | INFO     | app.llm:update_token_count:243 - Token usage: Input=1490, Completion=20, Cumulative Input=2834, Cumulative Completion=53, Total=1510, Cumulative Total=2887
+2026-01-09 12:04:35.786 | INFO     | app.agent.toolcall:think:81 - ✨ Manus's thoughts: 
+2026-01-09 12:04:35.786 | INFO     | app.agent.toolcall:think:82 - 🛠️ Manus selected 1 tools to use
+2026-01-09 12:04:35.786 | INFO     | app.agent.toolcall:think:86 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 12:04:35.786 | INFO     | app.agent.toolcall:think:89 - 🔧 Tool arguments: {"code":"print('Hello, World!')"}
+2026-01-09 12:04:35.786 | INFO     | app.agent.toolcall:execute_tool:180 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 12:04:53.994 | INFO     | app.agent.toolcall:act:150 - 🎯 Tool 'python_execute' completed its mission! Result: Observed output of cmd `python_execute` executed:
+{'observation': 'Execution timeout after 5 seconds', 'success': False}
+2026-01-09 12:04:53.994 | INFO     | app.agent.base:run:140 - Executing step 3/20
+2026-01-09 12:04:55.296 | INFO     | app.llm:update_token_count:243 - Token usage: Input=1623, Completion=38, Cumulative Input=4457, Cumulative Completion=91, Total=1661, Cumulative Total=4548
+2026-01-09 12:04:55.297 | INFO     | app.agent.toolcall:think:81 - ✨ Manus's thoughts: 
+2026-01-09 12:04:55.297 | INFO     | app.agent.toolcall:think:82 - 🛠️ Manus selected 1 tools to use
+2026-01-09 12:04:55.297 | INFO     | app.agent.toolcall:think:86 - 🧰 Tools being prepared: ['python_execute']
+2026-01-09 12:04:55.297 | INFO     | app.agent.toolcall:think:89 - 🔧 Tool arguments: {"code":"def hello_world():\n    return 'Hello, World!'\n\nresult = hello_world()\nprint(result)"}
+2026-01-09 12:04:55.298 | INFO     | app.agent.toolcall:execute_tool:180 - 🔧 Activating tool: 'python_execute'...
+2026-01-09 12:05:13.125 | INFO     | app.agent.toolcall:act:150 - 🎯 Tool 'python_execute' completed its mission! Result: Observed output of cmd `python_execute` executed:
+{'observation': 'Execution timeout after 5 seconds', 'success': False}
+2026-01-09 12:05:13.125 | INFO     | app.agent.base:run:140 - Executing step 4/20
+2026-01-09 12:05:14.022 | INFO     | app.llm:update_token_count:243 - Token usage: Input=1774, Completion=14, Cumulative Input=6231, Cumulative Completion=105, Total=1788, Cumulative Total=6336
+2026-01-09 12:05:14.023 | INFO     | app.agent.toolcall:think:81 - ✨ Manus's thoughts: 
+2026-01-09 12:05:14.024 | INFO     | app.agent.toolcall:think:82 - 🛠️ Manus selected 1 tools to use
+2026-01-09 12:05:14.024 | INFO     | app.agent.toolcall:think:86 - 🧰 Tools being prepared: ['terminate']
+2026-01-09 12:05:14.024 | INFO     | app.agent.toolcall:think:89 - 🔧 Tool arguments: {"status":"failure"}
+2026-01-09 12:05:14.025 | INFO     | app.agent.toolcall:execute_tool:180 - 🔧 Activating tool: 'terminate'...
+2026-01-09 12:05:14.025 | INFO     | app.agent.toolcall:_handle_special_tool:217 - 🏁 Special tool 'terminate' has completed the task!
+2026-01-09 12:05:14.025 | INFO     | app.agent.toolcall:act:150 - 🎯 Tool 'terminate' completed its mission! Result: Observed output of cmd `terminate` executed:
+The interaction has been completed with status: failure
+2026-01-09 12:05:14.026 | INFO     | app.tool.mcp:disconnect:194 - Disconnected from all MCP servers
+2026-01-09 12:05:14.027 | INFO     | __main__:main:27 - Request processing completed.

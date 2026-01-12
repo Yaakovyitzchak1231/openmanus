@@ -1,0 +1,7 @@
+2026-01-11 20:06:00.467 | INFO     | __main__:test_llm:9 - Initializing LLM...
+2026-01-11 20:06:01.284 | INFO     | __main__:test_llm:11 - Testing model: openai/gpt-4o-mini
+2026-01-11 20:06:01.284 | INFO     | __main__:test_llm:16 - Sending prompt: [{'role': 'user', 'content': 'Hello, respond with exactly One word: SUCCESS'}]
+2026-01-11 20:06:01.288 | INFO     | app.llm:update_token_count:245 - Token usage: Input=16, Completion=0, Cumulative Input=16, Cumulative Completion=0, Total=16, Cumulative Total=16
+2026-01-11 20:06:01.316 | INFO     | app.utils.cost_tracker:log_api_call:96 - API call logged: openai/gpt-4o-mini | 16in + 0out = $0.0000 | Total: $0.12/$20.0
+2026-01-11 20:06:02.280 | INFO     | app.llm:ask:473 - Estimated completion tokens for streaming response: 1
+2026-01-11 20:06:02.281 | INFO     | __main__:test_llm:20 - LLM Response: SUCCESS

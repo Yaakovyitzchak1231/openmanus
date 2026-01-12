@@ -1,0 +1,9 @@
+2026-01-09 13:18:50.441 | WARNING  | __main__:main:25 - Processing your request...
+2026-01-09 13:18:50.442 | INFO     | app.agent.base:run:146 - Executing step 1/20
+2026-01-09 13:19:02.306 | ERROR    | app.llm:ask_tool:781 - Unexpected error in ask_tool: 'LLM' object has no attribute 'input_token_count'
+2026-01-09 13:19:13.034 | ERROR    | app.llm:ask_tool:781 - Unexpected error in ask_tool: 'LLM' object has no attribute 'input_token_count'
+2026-01-09 13:19:24.242 | ERROR    | app.llm:ask_tool:781 - Unexpected error in ask_tool: 'LLM' object has no attribute 'input_token_count'
+2026-01-09 13:19:35.273 | ERROR    | app.llm:ask_tool:781 - Unexpected error in ask_tool: 'LLM' object has no attribute 'input_token_count'
+2026-01-09 13:19:47.081 | ERROR    | app.llm:ask_tool:781 - Unexpected error in ask_tool: 'LLM' object has no attribute 'input_token_count'
+2026-01-09 13:20:00.572 | ERROR    | app.llm:ask_tool:781 - Unexpected error in ask_tool: 'LLM' object has no attribute 'input_token_count'
+2026-01-09 13:20:00.573 | INFO     | app.tool.mcp:disconnect:194 - Disconnected from all MCP servers

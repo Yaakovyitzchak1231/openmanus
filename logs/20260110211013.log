@@ -1,0 +1,2 @@
+2026-01-10 21:10:42.899 | INFO     | app.agent.manus:initialize_helper:75 - High-effort mode enabled: max_steps=50
+2026-01-10 21:10:42.908 | ERROR    | app.agent.manus:initialize_mcp_servers:134 - Failed to connect to MCP server filesystem: [WinError 2] The system cannot find the file specified
