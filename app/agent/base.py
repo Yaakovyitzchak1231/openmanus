@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
+from app.harness.recording import RunRecorder
 from app.llm import LLM
 from app.logger import logger
 from app.sandbox.client import SANDBOX_CLIENT
@@ -31,6 +32,7 @@ class BaseAgent(BaseModel):
     # Dependencies
     llm: LLM = Field(default_factory=LLM, description="Language model instance")
     memory: Memory = Field(default_factory=Memory, description="Agent's memory store")
+    run_recorder: Optional[RunRecorder] = Field(default=None, exclude=True)
     state: AgentState = Field(
         default=AgentState.IDLE, description="Current agent state"
     )
@@ -116,7 +118,13 @@ class BaseAgent(BaseModel):
 
         # Create message with appropriate parameters based on role
         kwargs = {"base64_image": base64_image, **(kwargs if role == "tool" else {})}
-        self.memory.add_message(message_map[role](content, **kwargs))
+        message = message_map[role](content, **kwargs)
+        self.memory.add_message(message)
+        self._record_event("message", {"message": message.to_dict()})
+
+    def _record_event(self, event_type: str, payload: Optional[dict] = None) -> None:
+        if self.run_recorder:
+            self.run_recorder.event(event_type, payload)
 
     async def run(self, request: Optional[str] = None) -> str:
         """Execute the agent's main loop asynchronously.
@@ -133,6 +141,7 @@ class BaseAgent(BaseModel):
         if self.state != AgentState.IDLE:
             raise RuntimeError(f"Cannot run agent from state: {self.state}")
 
+        self._record_event("run_start", {"request": request})
         if request:
             self.update_memory("user", request)
 
@@ -156,6 +165,7 @@ class BaseAgent(BaseModel):
                 self.state = AgentState.IDLE
                 results.append(f"Terminated: Reached max steps ({self.max_steps})")
         await SANDBOX_CLIENT.cleanup()
+        self._record_event("run_end", {"steps": self.current_step, "state": self.state})
         return "\n".join(results) if results else "No steps executed"
 
     async def step(self) -> str:

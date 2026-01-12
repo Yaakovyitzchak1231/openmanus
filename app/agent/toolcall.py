@@ -83,6 +83,10 @@ class ToolCallAgent(ReActAgent):
             response.tool_calls if response and response.tool_calls else []
         )
         content = response.content if response and response.content else ""
+        self._record_event(
+            "tool_select",
+            {"tools": [call.function.name for call in tool_calls] if tool_calls else []},
+        )
 
         # Log response info
         logger.info(f"✨ {self.name}'s thoughts: {content}")
@@ -182,10 +186,14 @@ class ToolCallAgent(ReActAgent):
         try:
             # Parse arguments
             args = json.loads(command.function.arguments or "{}")
+            self._record_event("tool_execute", {"name": name, "arg_keys": list(args)})
 
             # Execute the tool
             logger.info(f"🔧 Activating tool: '{name}'...")
             result = await self.available_tools.execute(name=name, tool_input=args)
+            self._record_event(
+                "tool_result", {"name": name, "result_length": len(str(result))}
+            )
 
             # Handle special tools
             await self._handle_special_tool(name=name, result=result)
@@ -208,10 +216,12 @@ class ToolCallAgent(ReActAgent):
             logger.error(
                 f"📝 Oops! The arguments for '{name}' don't make sense - invalid JSON, arguments:{command.function.arguments}"
             )
+            self._record_event("tool_error", {"name": name, "error": "invalid_json"})
             return f"Error: {error_msg}"
         except Exception as e:
             error_msg = f"⚠️ Tool '{name}' encountered a problem: {str(e)}"
             logger.exception(error_msg)
+            self._record_event("tool_error", {"name": name, "error": str(e)})
             return f"Error: {error_msg}"
 
     async def _handle_special_tool(self, name: str, result: Any, **kwargs):

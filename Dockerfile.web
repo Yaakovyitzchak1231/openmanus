@@ -40,7 +40,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy application files
 COPY --chown=openmanus:openmanus app/ ./app/
 COPY --chown=openmanus:openmanus config/config.example.toml ./config/config.toml
-COPY --chown=openmanus:openmanus main.py run_flow.py run_mcp.py run_mcp_server.py sandbox_main.py ./
+COPY --chown=openmanus:openmanus main.py run_flow.py run_mcp.py run_mcp_server.py sandbox_main.py web_ui.py ./
 COPY --chown=openmanus:openmanus protocol/ ./protocol/
 
 # Install Playwright browsers for browser automation (optional, comment out if not needed)
@@ -63,9 +63,8 @@ ENV PYTHONUNBUFFERED=1 \
     HOST=0.0.0.0 \
     PORT=8000
 
-# Entry point - assuming you'll create a web_ui.py file
-# If using the A2A protocol server:
-CMD ["python", "-m", "protocol.a2a.app.main", "--host", "0.0.0.0", "--port", "8000"]
+# Entry point - FastAPI chat UI
+CMD ["uvicorn", "web_ui:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
 
-# Alternative: If you have a FastAPI web_ui.py file:
-# CMD ["uvicorn", "web_ui:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Alternative: If you want the A2A protocol server:
+# CMD ["python", "-m", "protocol.a2a.app.main", "--host", "0.0.0.0", "--port", "8000"]
