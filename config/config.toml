@@ -3,7 +3,7 @@
 
 # Global LLM configuration - OpenRouter
 [llm]
-model = "openai/gpt-4o-mini"              # Primary model for testing (cost-effective)
+model = "openai/gpt-4o"              # Upgraded model for better accuracy and data integrity
 base_url = "https://openrouter.ai/api/v1"  # OpenRouter API endpoint
 api_key = "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"   # Replace with your OpenRouter API key
 max_tokens = 8192                          # Maximum tokens in response
