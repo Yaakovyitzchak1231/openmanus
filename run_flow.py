@@ -33,7 +33,7 @@ async def run_flow():
         # Phase 2: Wrap with ReviewFlow if use_reviewer_agent is enabled
         if config.run_flow_config.use_reviewer_agent:
             logger.info(
-                "🔄 Reviewer agent enabled - using Doer-Critic self-correction loop"
+                "Reviewer agent enabled - using Doer-Critic self-correction loop"
             )
             max_iterations = getattr(config.run_flow_config, "max_review_iterations", 3)
 
