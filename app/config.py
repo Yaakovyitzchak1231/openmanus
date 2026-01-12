@@ -82,9 +82,6 @@ class RunflowSettings(BaseModel):
     use_reviewer_agent: bool = Field(
         default=False, description="Enable Doer-Critic self-correction loop"
     )
-    enable_hitl: bool = Field(
-        default=False, description="Enable Human-in-the-Loop verification pauses"
-    )
     max_review_iterations: int = Field(
         default=3, description="Maximum Doer-Critic iterations per step"
     )

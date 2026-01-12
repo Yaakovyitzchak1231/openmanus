@@ -53,3 +53,46 @@ Concise guidance for AI coding agents to be productive in this repo: architectur
 - **Chart Visualization:** Follow [app/tool/chart_visualization/README.md](app/tool/chart_visualization/README.md) for Node/Python deps before enabling data analysis.
 
 If any part is unclear (e.g., MCP config shape, planning schema, or visualization run steps), tell me which section to elaborate and I’ll refine.
+
+## Testing & Quality Assurance
+- **Test Framework:** Use `pytest` for all tests; install with `pip install pytest pytest-asyncio`.
+- **Running Tests:** Execute `pytest -v` from repo root; use `-k <pattern>` to filter tests.
+- **Test Location:** Integration tests in root (`test_*.py`), unit tests under `tests/` subdirectories.
+- **Test Isolation:** When creating new tests for development/validation:
+  - Create a separate folder (e.g., `tests/copilot_tests/` or `/tmp/test_workspace/`) for your test files
+  - Create a new branch before running any tests to isolate changes
+  - Clean up test artifacts after validation
+- **Pre-commit Hooks:** Install via `pre-commit install`; runs `black`, `isort`, `autoflake` on commit.
+- **Code Formatting:**
+  - Black for Python formatting (line length 88)
+  - isort with `--profile black` for import sorting
+  - Remove unused imports/variables with autoflake
+- **Test Coverage:** New features should include corresponding tests; follow existing test patterns.
+
+## Dependency Management
+- **Package Manager:** Use `pip` or `uv` (recommended for faster installs).
+- **Requirements:** All dependencies in `requirements.txt`; pin versions with `~=` for compatibility.
+- **Virtual Environment:** Always use venv or conda; activate before installing dependencies.
+- **Adding Dependencies:** When adding new packages, verify compatibility with Python 3.12+.
+- **MCP Configuration:** Optional MCP server connections defined in `config/mcp.json`.
+
+## Security & Best Practices
+- **API Keys:** Never commit API keys; use `config/config.toml` (gitignored) and follow `config.example.toml` template.
+- **Environment Variables:** Store secrets in `.env` (gitignored); see `.env.example` for reference.
+- **Input Validation:** Validate all external inputs, especially in tools that execute code or interact with filesystems.
+- **Error Handling:** Use try-except blocks with informative error messages; leverage `loguru` for logging.
+- **LLM Costs:** Monitor token usage via built-in cost tracking (`costs.json`); respect token limits in `config.toml`.
+
+## Development Workflow
+- **Branching:** Create feature branches from `main`; use descriptive names (e.g., `feature/add-mcp-tool`).
+- **Code Review:** All changes require review; ensure tests pass and follow conventions.
+- **Documentation:** Update relevant README sections when adding features; maintain inline docstrings for complex functions.
+- **Logging:** Use `loguru` logger for all debug/info/error messages; avoid `print()` statements.
+
+## Troubleshooting
+- **Import Errors:** Ensure all dependencies installed and virtual environment activated.
+- **LLM API Failures:** Check API keys in `config/config.toml`; verify network connectivity and rate limits.
+- **Browser Tools:** Run `playwright install` if browser automation fails; requires Node.js for some features.
+- **MCP Connection Issues:** Verify MCP server processes are running; check `config/mcp.json` configuration.
+- **Token Limit Exceeded:** Reduce context window or increase `max_tokens` in config; consider summarizing long conversations.
+- **Test Failures:** Run tests with `-v` flag for verbose output; check logs in `workspace/` directory for debugging.

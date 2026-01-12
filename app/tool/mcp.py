@@ -1,7 +1,4 @@
-import os
-import shutil
 from contextlib import AsyncExitStack
-from pathlib import Path
 from typing import Dict, List, Optional
 
 from mcp import ClientSession, StdioServerParameters
@@ -50,40 +47,6 @@ class MCPClients(ToolCollection):
         super().__init__()  # Initialize with empty tools list
         self.name = "mcp"  # Keep name for backward compatibility
 
-    @staticmethod
-    def _resolve_npx_path(command: str) -> str:
-        """Resolve npx path on Windows where it may not be in subprocess PATH.
-
-        On Windows, Python subprocesses often don't inherit the full system PATH,
-        causing npx to not be found even when it's installed. This method checks
-        common npx installation locations.
-
-        Args:
-            command: The command to resolve (e.g., 'npx')
-
-        Returns:
-            Full path to the command if found on Windows, otherwise original command
-        """
-        if command.lower() == "npx" and os.name == "nt":  # Windows only
-            # Try common npx locations on Windows
-            possible_paths = [
-                shutil.which("npx"),  # Try system PATH first
-                r"C:\Program Files\nodejs\npx.cmd",
-                os.path.expanduser(r"~\AppData\Roaming\npm\npx.cmd"),
-            ]
-
-            for path in possible_paths:
-                if path and Path(path).exists():
-                    logger.info(f"Resolved npx to: {path}")
-                    return path
-
-            logger.warning(
-                f"npx not found in common Windows locations. "
-                f"Ensure Node.js is installed and npx is in PATH."
-            )
-
-        return command
-
     async def connect_sse(self, server_url: str, server_id: str = "") -> None:
         """Connect to an MCP server using SSE transport."""
         if not server_url:
@@ -121,9 +84,7 @@ class MCPClients(ToolCollection):
         exit_stack = AsyncExitStack()
         self.exit_stacks[server_id] = exit_stack
 
-        # Resolve command path (especially important for npx on Windows)
-        resolved_command = self._resolve_npx_path(command)
-        server_params = StdioServerParameters(command=resolved_command, args=args)
+        server_params = StdioServerParameters(command=command, args=args)
         stdio_transport = await exit_stack.enter_async_context(
             stdio_client(server_params)
         )

@@ -7,7 +7,7 @@ to verify code quality and functionality.
 
 import subprocess
 import sys
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from app.logger import logger
 from app.tool.base import BaseTool, ToolResult

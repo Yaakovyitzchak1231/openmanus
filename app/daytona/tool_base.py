@@ -139,4 +139,3 @@ class SandboxToolsBase(BaseTool):
         cleaned_path = clean_path(path, self.workspace_path)
         logger.debug(f"Cleaned path: {path} -> {cleaned_path}")
         return cleaned_path
-
