@@ -1,4 +1,98 @@
-# OpenManus → Opus 4.5 Replication - Master Task List
+# OpenManus → Claude Opus 4.5 / Claude Code Replication Plan
+
+## Scope
+This plan is the single source of truth. It replaces prior phase checklists to avoid confusion.
+
+## Priority Track (Implement Now)
+These items align with the referenced Anthropic pages and focus on immediate replication of Opus 4.5 / Claude Code capabilities.
+
+### 1) Agent Harness + SDK Alignment
+- [ ] Define a minimal harness interface (inputs, tool registry, memory adapter, trace hooks)
+- [ ] Implement Claude Code-style agent loop orchestration
+- [ ] Add structured transcripts/outcomes for runs
+
+### 2) Tool Calling + Advanced Tool Use
+- [ ] Centralize tool registry for dynamic discovery
+- [ ] Add tool selection hints and execution telemetry
+- [ ] Standardize tool errors + retries
+
+### 3) MCP Code Execution Path
+- [ ] Add MCP code execution mode to reduce tool token overhead
+- [ ] Define sandbox limits + safe execution defaults
+- [ ] Document when to use code execution vs direct tool calls
+
+### 4) Context Editing + Memory Tool
+- [ ] Add context compaction hooks for long conversations
+- [ ] Implement memory tool adapters (in-memory + persistent)
+
+### 5) Effort Control
+- [ ] Support effort parameter in model config and surface it in runs
+
+### 6) Minimal Eval Harness
+- [ ] Define eval primitives (task, trial, graders, transcript, outcome)
+- [ ] Create small capability + regression suites
+- [ ] Log capability + safety results, even for minimal suites
+
+### 7) Long-Running Agent Hygiene
+- [ ] Add `init.sh` to start dev server + validate environment
+- [ ] Keep feature list and progress logs updated per session
+
+## Secondary Track (Planned, Later)
+These are deferred until the priority track is functional.
+
+> Note: The legacy phased plan is preserved below for historical context. The priority track above supersedes it for sequencing.
+
+### External Tools + Benchmarks (Deferred)
+- [ ] Initialize external repo directory (`external/` + `.gitkeep`)
+- [ ] Optional helper: `scripts/clone_external.sh` (batch clone + log to `claude-progress.txt`)
+- [ ] Clone open-source frameworks/tools/benchmarks into `/external` (log failures to `claude-progress.txt`)
+  - **Article 1 (Demystifying Evals)**
+    - [ ] `git clone https://github.com/laude-institute/harbor.git external/harbor` (Terminal-Bench harness)
+    - [ ] `git clone https://github.com/promptfoo/promptfoo.git external/promptfoo` (prompt testing; `npm install`)
+    - [ ] `git clone https://github.com/braintrustdata/autoevals.git external/autoevals` (model graders; `pip install -e`)
+    - [ ] `git clone https://github.com/langchain-ai/langchain.git external/langchain` (LangSmith datasets)
+    - [ ] `git clone https://github.com/langfuse/langfuse.git external/langfuse` (self-hosted observability)
+  - **Article 2 (Claude Opus 4.5 News)**
+    - [ ] `git clone https://github.com/safety-research/petri.git external/petri` (alignment auditing)
+    - [ ] `git clone https://github.com/sierra-research/tau2-bench.git external/tau2-bench` (multi-turn agentic evals)
+  - **Article 3 (System Card)**
+    - [ ] `git clone https://github.com/SWE-bench/SWE-bench.git external/swe-bench` (coding benchmarks)
+    - [ ] `git clone https://github.com/xlang-ai/OSWorld.git external/osworld` (computer-use tasks)
+    - [ ] `git clone https://github.com/fchollet/ARC-AGI.git external/arc-agi` (reasoning)
+    - [ ] `git clone https://github.com/web-arena-x/webarena.git external/webarena` (web agent tasks)
+    - [ ] `git clone https://github.com/idavidrein/gpqa.git external/gpqa` (graduate QA)
+    - [ ] `git clone https://github.com/safety-research/SHADE-Arena.git external/shade-arena` (safety evals)
+    - [ ] `git clone https://github.com/redwoodresearch/subversion-strategy-eval.git external/subversion-strategy-eval`
+    - [ ] `git clone https://github.com/laude-institute/terminal-bench.git external/terminal-bench`
+    - [ ] `git clone https://github.com/Future-House/LAB-Bench.git external/lab-bench`
+      - [ ] `huggingface-cli download futurehouse/lab-bench --local-dir external/lab-bench/dataset`
+    - [ ] `git clone https://github.com/centerforaisafety/hle.git external/hle`
+      - [ ] `huggingface-cli download cais/hle --local-dir external/hle/dataset`
+    - [ ] `git clone https://github.com/TIGER-AI-Lab/MMLU-Pro.git external/mmlu-pro`
+    - [ ] `git clone https://github.com/MMMU-Benchmark/MMMU.git external/mmmu`
+      - [ ] `huggingface-cli download MMMU/MMMU --local-dir external/mmmu/dataset`
+    - [ ] BrowseComp-Plus (dataset only)
+      - [ ] `huggingface-cli download Tevatron/browsecomp-plus-corpus --local-dir external/browsecomp-plus`
+    - [ ] CyberGym / FinanceAgent / SpreadsheetBench / Vending-Bench 2: conceptual integrations only
+      - [ ] `pip install openpyxl` (spreadsheet support)
+  - **Article 5 (Advanced Tool Use)**
+    - [ ] `git clone https://github.com/anthropics/claude-cookbooks.git external/claude-cookbooks`
+    - [ ] `git clone https://github.com/9600dev/llmvm.git external/llmvm`
+  - **Article 8 (Code Execution with MCP)**
+    - [ ] `git clone https://github.com/modelcontextprotocol/servers.git external/mcp-servers`
+  - **Article 9 (Agent SDK)**
+    - [ ] `git clone https://github.com/anthropics/claude-agent-sdk-python.git external/claude-agent-sdk-python`
+    - [ ] `git clone https://github.com/anthropics/claude-agent-sdk-typescript.git external/claude-agent-sdk-typescript`
+  - **Article 10 (Effective Harnesses)**
+    - [ ] `git clone https://github.com/puppeteer/puppeteer.git external/puppeteer` (E2E browser evals; `npm install puppeteer`)
+- [ ] Verification + tracking
+  - [ ] Run `ls external` and log output in `claude-progress.txt`
+  - [ ] Add usage notes per repo (Harbor for Terminal-Bench, Promptfoo for rubric grading, etc.)
+- [ ] Commit: `git add external claude-progress.txt feature_list.json && git commit -m "Cloned all open-source frameworks from articles"`
+
+---
+
+## Legacy Phased Plan (Historical Reference)
 
 ## Phase 1: Preparation and Research ✅ COMPLETE
 

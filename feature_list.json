@@ -1,0 +1,112 @@
+[
+  {
+    "category": "evals",
+    "description": "Integrate Harbor + Terminal-Bench for agent evaluation harness",
+    "steps": [
+      "Clone Harbor and Terminal-Bench into /external",
+      "Follow Harbor quickstart and register Terminal-Bench tasks",
+      "Run a sample eval and log results"
+    ],
+    "passes": false
+  },
+  {
+    "category": "graders",
+    "description": "Add Promptfoo + Autoevals rubric-based grading",
+    "steps": [
+      "Install Promptfoo and Autoevals dependencies",
+      "Create YAML rubric configs for grading",
+      "Wire graders into evaluation pipeline"
+    ],
+    "passes": false
+  },
+  {
+    "category": "benchmarks",
+    "description": "Integrate SWE-bench, OSWorld, ARC-AGI, WebArena, GPQA",
+    "steps": [
+      "Clone benchmark repos and install dependencies",
+      "Run baseline evals for each benchmark",
+      "Log results to benchmarks/results.json"
+    ],
+    "passes": false
+  },
+  {
+    "category": "safety",
+    "description": "Run Petri, SHADE-Arena, and Subversion Strategy Eval",
+    "steps": [
+      "Clone safety eval repos",
+      "Configure sabotage/deception test suites",
+      "Record alignment findings"
+    ],
+    "passes": false
+  },
+  {
+    "category": "multimodal",
+    "description": "Enable LAB-Bench, MMMU, MMLU-Pro datasets",
+    "steps": [
+      "Download datasets via huggingface-cli",
+      "Configure multimodal evaluation tasks",
+      "Run sample multimodal eval"
+    ],
+    "passes": false
+  },
+  {
+    "category": "tooling",
+    "description": "Integrate MCP servers, Puppeteer, and Claude Agent SDKs",
+    "steps": [
+      "Clone MCP servers and agent SDKs",
+      "Wire MCP code execution into harness",
+      "Use Puppeteer for browser automation tests"
+    ],
+    "passes": false
+  },
+  {
+    "category": "platform_features",
+    "description": "Align harness with Claude Opus 4.5 platform features (effort, context editing, memory)",
+    "steps": [
+      "Add effort parameter support in model config",
+      "Implement context compaction hooks",
+      "Add memory tool adapter (in-memory + persistent)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "agent_harness",
+    "description": "Implement Claude Code-style harness with tool orchestration and traces",
+    "steps": [
+      "Define harness interface + tool registry",
+      "Add structured tracing (transcripts/outcomes)",
+      "Create init.sh and session progress updates"
+    ],
+    "passes": false
+  },
+  {
+    "category": "eval_harness_minimal",
+    "description": "Minimal eval harness primitives aligned with Anthropic eval guidance",
+    "steps": [
+      "Define tasks, trials, graders, transcripts, outcomes",
+      "Create regression vs capability suites with small initial task sets",
+      "Log results for capability + safety categories"
+    ],
+    "passes": false
+  },
+  {
+    "category": "tooling_advanced",
+    "description": "Advanced tool use features (dynamic discovery, selection hints, error handling)",
+    "steps": [
+      "Centralize tool registry for dynamic discovery",
+      "Add tool selection hints and execution telemetry",
+      "Standardize tool errors + retries"
+    ],
+    "passes": false
+  },
+  {
+    "category": "mcp_code_execution",
+    "description": "MCP code execution mode with sandboxing controls",
+    "steps": [
+      "Add MCP code execution path to reduce tool token overhead",
+      "Define resource limits and sandbox defaults",
+      "Document when to use MCP code execution vs direct tool calls"
+    ],
+    "passes": false
+  }
+]

@@ -33,6 +33,16 @@ Before deploying, ensure you have:
 
 Test your deployment locally before pushing to production:
 
+### Optional: Start Docker without systemd
+
+If your environment does not run systemd (for example, CI or sandboxed containers), start the Docker daemon with the helper script:
+
+```bash
+scripts/start_docker_daemon.sh
+```
+
+This uses a `vfs` storage driver and disables iptables/bridge networking to work in restricted environments where Docker cannot set up kernel networking.
+
 ### Step 1: Create Configuration
 
 ```bash

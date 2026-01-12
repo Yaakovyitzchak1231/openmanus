@@ -1,0 +1,21 @@
+# Claude Opus 4.5 Clone - External Resources Progress Log
+
+## External Clone Log
+- Date:
+- Notes:
+- Failures (log clone errors or missing repos):
+
+## External Usage Notes
+- Harbor: Use for agent eval harness + Terminal-Bench integration (Phase 4).
+- Promptfoo: Use YAML rubric grading and regression tests (Phase 4).
+- Autoevals: Model-based grading for factuality/consistency (Phase 4).
+- SWE-bench / OSWorld / ARC-AGI / WebArena / GPQA: Core benchmark suites.
+- Petri / SHADE-Arena / Subversion Strategy Eval: Safety/alignment evals.
+- LAB-Bench / MMMU / MMLU-Pro: Multimodal + multilingual evals.
+- MCP Servers / Puppeteer / Claude Agent SDKs: Tooling and harness integration.
+
+## Directory Snapshot
+- Run `ls external` after clones and paste output here.
+
+## Automation Notes
+- Added scripts/clone_external.sh to batch clone repos and append to this log.
