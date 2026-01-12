@@ -35,7 +35,7 @@ enable_reflection = true                   # Add reflection prompts every 5 step
 use_data_analysis_agent = false            # Existing: Data analysis specialist
 use_reviewer_agent = false                 # Phase 2: Enable Doer-Critic self-correction loop (max 3 iterations)
 use_hierarchical_flow = false              # NEW: Enable orchestrator-worker pattern with sub-agents
-enable_hitl = false                        # NEW: Enable Human-in-the-Loop verification pauses
+enable_hitl = true                        # NEW: Enable Human-in-the-Loop verification pauses
 max_review_iterations = 3                  # Max Doer-Critic iterations per step
 
 # MCP (Model Context Protocol) Configuration

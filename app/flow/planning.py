@@ -2,7 +2,7 @@ import asyncio
 import json
 import time
 from enum import Enum
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import Field
 
@@ -48,6 +48,7 @@ class PlanningFlow(BaseFlow):
 
     llm: LLM = Field(default_factory=lambda: LLM())
     planning_tool: PlanningTool = Field(default_factory=PlanningTool)
+    feedback_logger: Optional[Any] = Field(default=None, exclude=True)
     executor_keys: List[str] = Field(default_factory=list)
     active_plan_id: str = Field(default_factory=lambda: f"plan_{int(time.time())}")
     current_step_index: Optional[int] = None
@@ -124,6 +125,45 @@ class PlanningFlow(BaseFlow):
                 executor = self.get_executor(step_type)
                 step_result = await self._execute_step(executor, step_info)
                 result += step_result + "\n"
+
+                # Human-in-the-Loop (HITL) Phase
+                from app.config import config
+
+                if config.run_flow_config.enable_hitl:
+                    print(
+                        f"\n--- HITL Pause: Step {self.current_step_index} Completed ---"
+                    )
+                    print(f"Outcome: {step_result[:200]}...")
+                    user_feedback = input(
+                        "Provide feedback or press Enter to continue: "
+                    ).strip()
+
+                    if user_feedback:
+                        logger.info(
+                            f"Injecting HITL feedback for step {self.current_step_index}"
+                        )
+                        executor.update_memory(
+                            "user", f"User feedback on previous step: {user_feedback}"
+                        )
+
+                        # Log feedback to database
+                        try:
+                            if not self.feedback_logger:
+                                from app.tool.feedback_logger import FeedbackLogger
+
+                                self.feedback_logger = FeedbackLogger()
+
+                            await self.feedback_logger.execute(
+                                step_text=step_info.get("text", ""),
+                                agent_name=executor.name,
+                                user_feedback=user_feedback,
+                                successful_correction=True,
+                            )
+                        except Exception as e:
+                            logger.error(f"Failed to log feedback: {e}")
+
+                        # Update result to include feedback
+                        result += f"[HITL Feedback]: {user_feedback}\n"
 
                 # Check if agent wants to terminate
                 if hasattr(executor, "state") and executor.state == AgentState.FINISHED:
@@ -348,7 +388,7 @@ class PlanningFlow(BaseFlow):
             tool_selection_hint = self._format_tool_selection_hint(executor, step_text)
             if tool_selection_hint:
                 step_prompt += f"\n{tool_selection_hint}\n"
-            
+
             step_prompt += "Please execute this step using the appropriate tools. When done, provide a summary of what you accomplished.\n"
 
             # Use agent.run() to execute the step
@@ -586,7 +626,7 @@ class PlanningFlow(BaseFlow):
         Returns:
             Formatted tool selection hint or empty string if no tools available
         """
-        if not hasattr(agent, 'available_tools') or not agent.available_tools:
+        if not hasattr(agent, "available_tools") or not agent.available_tools:
             return ""
 
         tools_desc = []
