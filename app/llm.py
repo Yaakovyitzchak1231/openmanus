@@ -467,6 +467,25 @@ class LLM:
                     temperature if temperature is not None else self.temperature
                 )
 
+            # Check cache (excluding stream param to share cache between streaming/non-streaming)
+            cache_key = self._hash_cache_key({
+                "model": self.model,
+                "messages": messages,
+                "max_tokens": params.get("max_tokens"),
+                "max_completion_tokens": params.get("max_completion_tokens"),
+                "temperature": params.get("temperature"),
+            })
+
+            if self.enable_response_cache:
+                cached_entry = self._cache_get(cache_key)
+                if cached_entry:
+                    logger.info("Cache hit for LLM query")
+                    content = cached_entry["content"]
+                    if stream:
+                        print(content)
+                        print()
+                    return content
+
             if not stream:
                 # Non-streaming request
                 response = await self.client.chat.completions.create(
@@ -481,7 +500,14 @@ class LLM:
                     response.usage.prompt_tokens, response.usage.completion_tokens
                 )
 
-                return response.choices[0].message.content
+                content = response.choices[0].message.content
+                if self.enable_response_cache:
+                    self._cache_set(cache_key, {
+                        "content": content,
+                        "expires_at": time.time() + self._response_cache_ttl_seconds
+                    })
+
+                return content
 
             # Streaming request, For streaming, update estimated token count before making the request
             self.update_token_count(input_tokens)
@@ -507,6 +533,12 @@ class LLM:
                 f"Estimated completion tokens for streaming response: {completion_tokens}"
             )
             self.total_completion_tokens += completion_tokens
+
+            if self.enable_response_cache:
+                self._cache_set(cache_key, {
+                    "content": full_response,
+                    "expires_at": time.time() + self._response_cache_ttl_seconds
+                })
 
             return full_response
 
@@ -639,6 +671,25 @@ class LLM:
                     temperature if temperature is not None else self.temperature
                 )
 
+            # Check cache
+            cache_key = self._hash_cache_key({
+                "model": self.model,
+                "messages": all_messages, # This includes images in formatted way
+                "max_tokens": params.get("max_tokens"),
+                "max_completion_tokens": params.get("max_completion_tokens"),
+                "temperature": params.get("temperature"),
+            })
+
+            if self.enable_response_cache:
+                cached_entry = self._cache_get(cache_key)
+                if cached_entry:
+                    logger.info("Cache hit for LLM image query")
+                    content = cached_entry["content"]
+                    if stream:
+                        print(content)
+                        print()
+                    return content
+
             # Handle non-streaming request
             if not stream:
                 response = await self.client.chat.completions.create(**params)
@@ -647,7 +698,15 @@ class LLM:
                     raise ValueError("Empty or invalid response from LLM")
 
                 self.update_token_count(response.usage.prompt_tokens)
-                return response.choices[0].message.content
+
+                content = response.choices[0].message.content
+                if self.enable_response_cache:
+                    self._cache_set(cache_key, {
+                        "content": content,
+                        "expires_at": time.time() + self._response_cache_ttl_seconds
+                    })
+
+                return content
 
             # Handle streaming request
             self.update_token_count(input_tokens)
@@ -664,6 +723,12 @@ class LLM:
 
             if not full_response:
                 raise ValueError("Empty response from streaming LLM")
+
+            if self.enable_response_cache:
+                self._cache_set(cache_key, {
+                    "content": full_response,
+                    "expires_at": time.time() + self._response_cache_ttl_seconds
+                })
 
             return full_response
 
