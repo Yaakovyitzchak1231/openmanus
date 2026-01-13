@@ -1,0 +1,80 @@
+[
+  {
+    "task_id": "reason_001_math_word",
+    "prompt": "A store sells apples for $2 each and oranges for $3 each. If I buy 4 apples and 3 oranges, how much do I spend in total? Show your calculation and provide the final answer.",
+    "category": "reasoning",
+    "difficulty": "easy",
+    "expected_patterns": ["17|\\$17"],
+    "grading_criteria": [
+      "Shows calculation for apples (4 * 2 = 8)",
+      "Shows calculation for oranges (3 * 3 = 9)",
+      "Provides correct total of $17"
+    ],
+    "max_steps": 5,
+    "timeout_seconds": 60,
+    "tags": ["math", "arithmetic"]
+  },
+  {
+    "task_id": "reason_002_sequence",
+    "prompt": "What is the next number in this sequence: 2, 6, 12, 20, 30, ? Explain your reasoning.",
+    "category": "reasoning",
+    "difficulty": "medium",
+    "expected_patterns": ["42"],
+    "grading_criteria": [
+      "Identifies the pattern (differences increase by 2 each time, or n*(n+1))",
+      "Correctly calculates the next number as 42",
+      "Provides clear explanation"
+    ],
+    "max_steps": 5,
+    "timeout_seconds": 120,
+    "tags": ["sequences", "patterns"]
+  },
+  {
+    "task_id": "reason_003_logic_puzzle",
+    "prompt": "Alice, Bob, and Carol are standing in a line. Alice is not first. Bob is not last. Carol is not in the middle. What is the order from first to last?",
+    "category": "reasoning",
+    "difficulty": "medium",
+    "expected_patterns": ["Bob.*Alice.*Carol|Bob,\\s*Alice,\\s*Carol"],
+    "grading_criteria": [
+      "Correctly deduces Bob must be first",
+      "Correctly deduces Alice must be in the middle",
+      "Correctly deduces Carol must be last",
+      "Final answer is Bob, Alice, Carol"
+    ],
+    "max_steps": 5,
+    "timeout_seconds": 120,
+    "tags": ["logic", "deduction"]
+  },
+  {
+    "task_id": "reason_004_optimization",
+    "prompt": "You have a 3-gallon jug and a 5-gallon jug. How can you measure exactly 4 gallons of water? Describe each step.",
+    "category": "reasoning",
+    "difficulty": "hard",
+    "grading_criteria": [
+      "Provides a valid sequence of steps",
+      "Each step is physically possible (fill, empty, pour)",
+      "Final result is exactly 4 gallons in one jug",
+      "Solution is logically sound"
+    ],
+    "max_steps": 10,
+    "timeout_seconds": 180,
+    "tags": ["logic", "puzzles", "water-jug"]
+  },
+  {
+    "task_id": "reason_005_estimation",
+    "prompt": "Estimate how many piano tuners there are in Chicago. Show your reasoning using Fermi estimation.",
+    "category": "reasoning",
+    "difficulty": "hard",
+    "grading_criteria": [
+      "Estimates Chicago population (around 2-3 million)",
+      "Estimates households or pianos per capita",
+      "Estimates tuning frequency (e.g., once per year)",
+      "Estimates tunings per tuner per year",
+      "Arrives at a reasonable estimate (50-500 range)",
+      "Shows clear step-by-step reasoning"
+    ],
+    "max_steps": 10,
+    "timeout_seconds": 180,
+    "tags": ["estimation", "fermi"]
+  }
+]

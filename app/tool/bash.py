@@ -1,9 +1,9 @@
 import asyncio
 import os
-from typing import Optional
+from typing import List, Optional
 
 from app.exceptions import ToolError
-from app.tool.base import BaseTool, CLIResult
+from app.tool.base import BaseTool, CLIResult, ToolExample
 
 
 _BASH_DESCRIPTION = """Execute a bash command in the terminal.
@@ -128,6 +128,35 @@ class Bash(BaseTool):
         },
         "required": ["command"],
     }
+    examples: List[ToolExample] = [
+        ToolExample(
+            description="List files with details",
+            parameters={"command": "ls -la /workspace"},
+            expected_output="total 48\ndrwxr-xr-x ...",
+            notes="Use -la for detailed listing including hidden files"
+        ),
+        ToolExample(
+            description="Find Python files recursively",
+            parameters={"command": "find . -name '*.py' -type f"},
+            expected_output="./main.py\n./app/tool/base.py\n..."
+        ),
+        ToolExample(
+            description="Search for a pattern in files",
+            parameters={"command": "grep -r 'def execute' --include='*.py'"},
+            expected_output="./app/tool/base.py:    async def execute..."
+        ),
+        ToolExample(
+            description="Check git status",
+            parameters={"command": "git status --short"},
+            expected_output="M  app/tool/base.py\n?? new_file.py"
+        ),
+        ToolExample(
+            description="Run a command in the background",
+            parameters={"command": "python3 server.py > server.log 2>&1 &"},
+            expected_output="[1] <pid>",
+            notes="Redirect output to a file for long-running processes"
+        )
+    ]
 
     _session: Optional[_BashSession] = None
 

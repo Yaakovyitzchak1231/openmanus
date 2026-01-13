@@ -7,7 +7,7 @@ from typing import Any, DefaultDict, List, Literal, Optional, get_args
 from app.config import config
 from app.exceptions import ToolError
 from app.tool import BaseTool
-from app.tool.base import CLIResult, ToolResult
+from app.tool.base import CLIResult, ToolExample, ToolResult
 from app.tool.file_operators import (
     FileOperator,
     LocalFileOperator,
@@ -98,6 +98,39 @@ class StrReplaceEditor(BaseTool):
         },
         "required": ["command", "path"],
     }
+    examples: List[ToolExample] = [
+        ToolExample(
+            description="View a file",
+            parameters={"command": "view", "path": "/workspace/main.py"},
+            expected_output="<file contents with line numbers>"
+        ),
+        ToolExample(
+            description="View specific lines of a file",
+            parameters={"command": "view", "path": "/workspace/main.py", "view_range": [10, 20]},
+            expected_output="<lines 10-20 with line numbers>"
+        ),
+        ToolExample(
+            description="Create a new file",
+            parameters={"command": "create", "path": "/workspace/utils.py", "file_text": "def helper():\n    return 42"},
+            expected_output="File created successfully at: /workspace/utils.py"
+        ),
+        ToolExample(
+            description="Replace text in a file",
+            parameters={
+                "command": "str_replace",
+                "path": "/workspace/main.py",
+                "old_str": "def old_function():\n    pass",
+                "new_str": "def new_function():\n    return 42"
+            },
+            expected_output="The file /workspace/main.py has been edited.",
+            notes="old_str must match exactly including whitespace"
+        ),
+        ToolExample(
+            description="Insert text at a specific line",
+            parameters={"command": "insert", "path": "/workspace/main.py", "insert_line": 5, "new_str": "# New comment\nimport os"},
+            expected_output="The file /workspace/main.py has been edited."
+        )
+    ]
     _file_history: DefaultDict[PathLike, List[str]] = defaultdict(list)
     _local_operator: LocalFileOperator = LocalFileOperator()
     _sandbox_operator: SandboxFileOperator = SandboxFileOperator()

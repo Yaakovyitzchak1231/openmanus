@@ -1,0 +1,58 @@
+[
+  {
+    "task_id": "tool_001_create_file",
+    "prompt": "Create a file called 'hello.txt' with the content 'Hello, World!'",
+    "category": "tool_use",
+    "difficulty": "easy",
+    "expected_patterns": ["Hello, World!"],
+    "test_code": "import os; test_result = os.path.exists('hello.txt') and open('hello.txt').read().strip() == 'Hello, World!'",
+    "max_steps": 5,
+    "timeout_seconds": 60,
+    "tags": ["file", "write"]
+  },
+  {
+    "task_id": "tool_002_read_modify",
+    "prompt": "Read the file 'data.txt', count the number of lines, and report the count. First create data.txt with 5 lines of text.",
+    "category": "tool_use",
+    "difficulty": "easy",
+    "expected_patterns": ["5|five"],
+    "grading_criteria": [
+      "Created a file called data.txt",
+      "File contains exactly 5 lines",
+      "Correctly reported the line count"
+    ],
+    "max_steps": 10,
+    "timeout_seconds": 120,
+    "tags": ["file", "read", "count"]
+  },
+  {
+    "task_id": "tool_003_json_manipulation",
+    "prompt": "Create a JSON file called 'config.json' with a dictionary containing keys 'name' (value: 'OpenManus'), 'version' (value: '1.0'), and 'features' (value: list of 'eval', 'tools', 'memory')",
+    "category": "tool_use",
+    "difficulty": "medium",
+    "test_code": "import json; f = open('config.json'); d = json.load(f); test_result = d.get('name') == 'OpenManus' and d.get('version') == '1.0' and set(d.get('features', [])) == {'eval', 'tools', 'memory'}",
+    "max_steps": 10,
+    "timeout_seconds": 120,
+    "tags": ["file", "json"]
+  },
+  {
+    "task_id": "tool_004_directory_structure",
+    "prompt": "Create a directory structure: myproject/src/ and myproject/tests/. Inside src/, create an empty __init__.py file.",
+    "category": "tool_use",
+    "difficulty": "medium",
+    "test_code": "import os; test_result = os.path.isdir('myproject/src') and os.path.isdir('myproject/tests') and os.path.exists('myproject/src/__init__.py')",
+    "max_steps": 10,
+    "timeout_seconds": 120,
+    "tags": ["directory", "structure"]
+  },
+  {
+    "task_id": "tool_005_search_replace",
+    "prompt": "Create a file 'template.txt' with the content 'Hello {{NAME}}, welcome to {{PLACE}}!'. Then replace {{NAME}} with 'Alice' and {{PLACE}} with 'Wonderland'.",
+    "category": "tool_use",
+    "difficulty": "medium",
+    "test_code": "test_result = open('template.txt').read().strip() == 'Hello Alice, welcome to Wonderland!'",
+    "max_steps": 10,
+    "timeout_seconds": 120,
+    "tags": ["file", "replace"]
+  }
+]

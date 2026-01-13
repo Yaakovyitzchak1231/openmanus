@@ -1,10 +1,30 @@
 import json
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
 from app.utils.logger import logger
+
+
+class ToolExample(BaseModel):
+    """Represents an example usage of a tool.
+
+    Adding examples to tools improves LLM accuracy by ~18% according to
+    Anthropic's tool use documentation. Examples show the model concrete
+    usage patterns and expected inputs/outputs.
+
+    Attributes:
+        description: What this example demonstrates
+        parameters: Example input parameters as a dictionary
+        expected_output: Optional expected result description
+        notes: Additional guidance or caveats
+    """
+
+    description: str = Field(..., description="What this example demonstrates")
+    parameters: Dict[str, Any] = Field(..., description="Example input parameters")
+    expected_output: Optional[str] = Field(default=None, description="Expected result")
+    notes: Optional[str] = Field(default=None, description="Additional guidance")
 
 
 # class BaseTool(ABC, BaseModel):
@@ -94,7 +114,10 @@ class BaseTool(ABC, BaseModel):
     name: str
     description: str
     parameters: Optional[dict] = None
-    # _schemas: Dict[str, List[ToolSchema]] = {}
+    examples: Optional[List["ToolExample"]] = Field(
+        default=None,
+        description="Usage examples to improve LLM accuracy"
+    )
 
     class Config:
         arbitrary_types_allowed = True
@@ -131,10 +154,33 @@ class BaseTool(ABC, BaseModel):
             "type": "function",
             "function": {
                 "name": self.name,
-                "description": self.description,
+                "description": self._description_with_examples(),
                 "parameters": self.parameters,
             },
         }
+
+    def _description_with_examples(self) -> str:
+        """Generate description with embedded examples.
+
+        Embeds usage examples directly into the tool description,
+        which improves LLM tool accuracy by ~18%.
+
+        Returns:
+            Description string with examples appended if available
+        """
+        if not self.examples:
+            return self.description
+
+        examples_text = "\n\nExamples:"
+        for i, ex in enumerate(self.examples, 1):
+            examples_text += f"\n\n{i}. {ex.description}"
+            examples_text += f"\n   Input: {json.dumps(ex.parameters)}"
+            if ex.expected_output:
+                examples_text += f"\n   Output: {ex.expected_output}"
+            if ex.notes:
+                examples_text += f"\n   Note: {ex.notes}"
+
+        return self.description + examples_text
 
     # def get_schemas(self) -> Dict[str, List[ToolSchema]]:
     #     """Get all registered tool schemas.

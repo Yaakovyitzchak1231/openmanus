@@ -1,9 +1,9 @@
 import multiprocessing
 import sys
 from io import StringIO
-from typing import Dict
+from typing import Dict, List
 
-from app.tool.base import BaseTool
+from app.tool.base import BaseTool, ToolExample
 
 
 class PythonExecute(BaseTool):
@@ -21,6 +21,35 @@ class PythonExecute(BaseTool):
         },
         "required": ["code"],
     }
+    examples: List[ToolExample] = [
+        ToolExample(
+            description="Calculate factorial using math library",
+            parameters={"code": "import math\nprint(math.factorial(5))"},
+            expected_output="120",
+            notes="Use print() to see results"
+        ),
+        ToolExample(
+            description="List comprehension for squares",
+            parameters={"code": "print([x**2 for x in range(5)])"},
+            expected_output="[0, 1, 4, 9, 16]"
+        ),
+        ToolExample(
+            description="Read and count lines in a file",
+            parameters={"code": "with open('data.txt') as f:\n    print(len(f.readlines()))"},
+            expected_output="<number of lines>",
+            notes="Useful for file analysis"
+        ),
+        ToolExample(
+            description="JSON processing and pretty printing",
+            parameters={"code": "import json\ndata = {'key': 'value', 'count': 42}\nprint(json.dumps(data, indent=2))"},
+            expected_output='{\n  "key": "value",\n  "count": 42\n}'
+        ),
+        ToolExample(
+            description="Data analysis with collections",
+            parameters={"code": "from collections import Counter\nwords = ['a', 'b', 'a', 'c', 'a', 'b']\nprint(Counter(words).most_common(2))"},
+            expected_output="[('a', 3), ('b', 2)]"
+        )
+    ]
 
     def _run_code(self, code: str, result_dict: dict, safe_globals: dict) -> None:
         original_stdout = sys.stdout
