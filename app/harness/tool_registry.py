@@ -24,10 +24,14 @@ class ToolRegistry:
 
     def remove_by_source(self, source: str) -> None:
         keep_tools = [
-            tool for tool in self._collection.tools if self._sources.get(tool.name) != source
+            tool
+            for tool in self._collection.tools
+            if self._sources.get(tool.name) != source
         ]
         self._collection = ToolCollection(*keep_tools)
-        self._sources = {tool.name: self._sources.get(tool.name, "local") for tool in keep_tools}
+        self._sources = {
+            tool.name: self._sources.get(tool.name, "local") for tool in keep_tools
+        }
 
     def remove_by_source_prefix(self, prefix: str) -> None:
         keep_tools = [
@@ -36,7 +40,9 @@ class ToolRegistry:
             if not self._sources.get(tool.name, "").startswith(prefix)
         ]
         self._collection = ToolCollection(*keep_tools)
-        self._sources = {tool.name: self._sources.get(tool.name, "local") for tool in keep_tools}
+        self._sources = {
+            tool.name: self._sources.get(tool.name, "local") for tool in keep_tools
+        }
 
     def list_tools(self) -> List[Dict[str, str]]:
         return [

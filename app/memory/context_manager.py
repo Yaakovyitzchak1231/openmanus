@@ -5,23 +5,24 @@ Works with any LLM provider (OpenAI, Anthropic, OpenRouter, local models, etc.)
 Enables 50+ step agent runs without context overflow.
 """
 
-from typing import List, Dict, Any, Optional, Literal, TYPE_CHECKING
-from pydantic import BaseModel, Field
 import logging
 import re
+from typing import TYPE_CHECKING, Any, Dict, List, Literal
+
+from pydantic import BaseModel, Field
 
 from .compaction_strategies import (
     CompactionStrategy,
-    ToolResultClearer,
-    ThinkingClearer,
     MessageSummarizer,
     SelectiveRetention,
-    CompositeStrategy
+    ThinkingClearer,
+    ToolResultClearer,
 )
 
+
 if TYPE_CHECKING:
-    from app.schema import Message
     from app.llm import LLM
+    from app.schema import Message
 
 logger = logging.getLogger(__name__)
 
@@ -43,44 +44,49 @@ class ContextManager(BaseModel):
 
     # Thresholds
     compaction_threshold_tokens: int = Field(
-        default=100000,
-        description="Token threshold to trigger compaction"
+        default=100000, description="Token threshold to trigger compaction"
     )
     warning_threshold_percent: float = Field(
         default=0.8,
-        description="Percentage of threshold to trigger warning (0.8 = 80%)"
+        description="Percentage of threshold to trigger warning (0.8 = 80%)",
     )
 
     # Strategy configuration
     strategy: Literal["simple", "summarize", "composite"] = Field(
         default="simple",
-        description="Compaction strategy: simple (selective retention), summarize (LLM summary), composite (layered)"
+        description="Compaction strategy: simple (selective retention), summarize (LLM summary), composite (layered)",
     )
 
     # Strategies
     simple_strategy: SelectiveRetention = Field(
         default_factory=lambda: SelectiveRetention(keep_recent_turns=5)
     )
-    summarizer: MessageSummarizer = Field(
-        default_factory=MessageSummarizer
-    )
+    summarizer: MessageSummarizer = Field(default_factory=MessageSummarizer)
     composite_strategies: List[CompactionStrategy] = Field(
         default_factory=lambda: [
             ToolResultClearer(keep_recent=5),
             ThinkingClearer(keep_recent_turns=2),
-            SelectiveRetention(keep_recent_turns=5)
+            SelectiveRetention(keep_recent_turns=5),
         ]
     )
 
     # Tracking metrics
-    total_tokens_saved: int = Field(default=0, description="Total tokens saved by compaction")
-    compaction_count: int = Field(default=0, description="Number of compaction operations")
-    last_compaction_savings: int = Field(default=0, description="Tokens saved in last compaction")
+    total_tokens_saved: int = Field(
+        default=0, description="Total tokens saved by compaction"
+    )
+    compaction_count: int = Field(
+        default=0, description="Number of compaction operations"
+    )
+    last_compaction_savings: int = Field(
+        default=0, description="Tokens saved in last compaction"
+    )
 
     class Config:
         arbitrary_types_allowed = True
 
-    async def check_context_health(self, messages: List["Message"], llm: "LLM") -> Dict[str, Any]:
+    async def check_context_health(
+        self, messages: List["Message"], llm: "LLM"
+    ) -> Dict[str, Any]:
         """
         Check current context token usage and health.
 
@@ -92,7 +98,11 @@ class ContextManager(BaseModel):
             Dict with token_count, threshold, percent_used, needs_compaction, warning
         """
         token_count = llm.count_message_tokens(messages)
-        threshold_percent = token_count / self.compaction_threshold_tokens if self.compaction_threshold_tokens > 0 else 0
+        threshold_percent = (
+            token_count / self.compaction_threshold_tokens
+            if self.compaction_threshold_tokens > 0
+            else 0
+        )
 
         return {
             "token_count": token_count,
@@ -100,13 +110,11 @@ class ContextManager(BaseModel):
             "percent_used": threshold_percent,
             "needs_compaction": threshold_percent >= 1.0,
             "warning": threshold_percent >= self.warning_threshold_percent,
-            "message_count": len(messages)
+            "message_count": len(messages),
         }
 
     async def compact_if_needed(
-        self,
-        messages: List["Message"],
-        llm: "LLM"
+        self, messages: List["Message"], llm: "LLM"
     ) -> List["Message"]:
         """
         Apply compaction if context exceeds threshold.
@@ -153,7 +161,11 @@ class ContextManager(BaseModel):
         self.last_compaction_savings = original_count - new_count
         self.total_tokens_saved += self.last_compaction_savings
 
-        reduction_percent = (self.last_compaction_savings / original_count * 100) if original_count > 0 else 0
+        reduction_percent = (
+            (self.last_compaction_savings / original_count * 100)
+            if original_count > 0
+            else 0
+        )
         logger.info(
             f"Compaction complete. Reduced {original_count:,} -> {new_count:,} tokens "
             f"({self.last_compaction_savings:,} saved, {reduction_percent:.1f}% reduction)"
@@ -162,9 +174,7 @@ class ContextManager(BaseModel):
         return messages
 
     async def force_compact(
-        self,
-        messages: List["Message"],
-        llm: "LLM"
+        self, messages: List["Message"], llm: "LLM"
     ) -> List["Message"]:
         """
         Force compaction regardless of threshold.
@@ -188,9 +198,7 @@ class ContextManager(BaseModel):
         return messages
 
     async def _summarize_messages(
-        self,
-        messages: List["Message"],
-        llm: "LLM"
+        self, messages: List["Message"], llm: "LLM"
     ) -> List["Message"]:
         """
         Generate summary and replace history.
@@ -205,7 +213,7 @@ class ContextManager(BaseModel):
             # Generate summary using the LLM (works with any provider)
             response = await llm.ask(
                 messages=messages + [summary_request],
-                model=self.summarizer.summary_model  # None = use default model
+                model=self.summarizer.summary_model,  # None = use default model
             )
 
             # Extract summary from <summary> tags
@@ -229,16 +237,20 @@ class ContextManager(BaseModel):
                 )
             )
 
-            logger.info(f"Generated summary ({len(summary_text)} chars), replaced {len(messages)} messages")
+            logger.info(
+                f"Generated summary ({len(summary_text)} chars), replaced {len(messages)} messages"
+            )
             return new_messages
 
         except Exception as e:
-            logger.error(f"Failed to generate summary: {e}. Falling back to selective retention.")
+            logger.error(
+                f"Failed to generate summary: {e}. Falling back to selective retention."
+            )
             return await self.simple_strategy.apply(messages)
 
     def _extract_summary(self, response: str) -> str:
         """Extract content from <summary> tags"""
-        match = re.search(r'<summary>(.*?)</summary>', response, re.DOTALL)
+        match = re.search(r"<summary>(.*?)</summary>", response, re.DOTALL)
         if match:
             return match.group(1).strip()
         logger.warning("No <summary> tags found in response, using full response")
@@ -251,7 +263,7 @@ class ContextManager(BaseModel):
             "total_tokens_saved": self.total_tokens_saved,
             "last_compaction_savings": self.last_compaction_savings,
             "strategy": self.strategy,
-            "threshold": self.compaction_threshold_tokens
+            "threshold": self.compaction_threshold_tokens,
         }
 
     def reset_stats(self):

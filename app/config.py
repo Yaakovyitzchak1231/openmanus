@@ -181,9 +181,7 @@ class MCPCodeExecutionSettings(BaseModel):
         default=None,
         description="Maximum output size in characters (None or <=0 means no limit)",
     )
-    timeout_seconds: int = Field(
-        default=30, description="Soft timeout in seconds"
-    )
+    timeout_seconds: int = Field(default=30, description="Soft timeout in seconds")
     preferred_server: Optional[str] = Field(
         default=None, description="Preferred MCP server id for execution"
     )

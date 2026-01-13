@@ -13,11 +13,12 @@ Available Sub-Agents:
 """
 
 from app.agent.subagents.base_subagent import BaseSubAgent
+from app.agent.subagents.build_agent import BuildAgent
+from app.agent.subagents.coding_agent import CodingAgent
 from app.agent.subagents.explore_agent import ExploreAgent
 from app.agent.subagents.plan_agent import PlanAgent
-from app.agent.subagents.coding_agent import CodingAgent
 from app.agent.subagents.test_agent import TestAgent
-from app.agent.subagents.build_agent import BuildAgent
+
 
 __all__ = [
     "BaseSubAgent",

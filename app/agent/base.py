@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import ClassVar, Dict, List, Literal, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -8,6 +8,7 @@ from app.llm import LLM
 from app.logger import logger
 from app.sandbox.client import SANDBOX_CLIENT
 from app.schema import ROLE_TYPE, AgentState, Memory, Message
+
 
 if TYPE_CHECKING:
     from app.memory import ContextManager
@@ -186,7 +187,8 @@ class BaseAgent(BaseModel):
         results: List[str] = []
         async with self.state_context(AgentState.RUNNING):
             while (
-                self.current_step < max_steps_limit and self.state != AgentState.FINISHED
+                self.current_step < max_steps_limit
+                and self.state != AgentState.FINISHED
             ):
                 self.current_step += 1
                 logger.info(f"Executing step {self.current_step}/{max_steps_limit}")
@@ -194,8 +196,10 @@ class BaseAgent(BaseModel):
                 # Context management: compact if needed before each step
                 if self.context_manager:
                     try:
-                        self.memory.messages = await self.context_manager.compact_if_needed(
-                            self.memory.messages, self.llm
+                        self.memory.messages = (
+                            await self.context_manager.compact_if_needed(
+                                self.memory.messages, self.llm
+                            )
                         )
                     except Exception as e:
                         logger.warning(f"Context compaction failed: {e}")

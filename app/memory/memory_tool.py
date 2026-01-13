@@ -5,12 +5,13 @@ Allows agents to store/retrieve information outside the active context window.
 Uses SQLite for persistence, works with any LLM provider.
 """
 
-from typing import Optional, List, Dict, Any
-from pydantic import Field
-import sqlite3
 import json
 import os
+import sqlite3
 from datetime import datetime
+from typing import Any, Optional
+
+from pydantic import Field
 
 from app.tool.base import BaseTool, ToolResult
 
@@ -45,30 +46,32 @@ Use this to preserve important information that might be lost during context com
             "action": {
                 "type": "string",
                 "enum": ["store", "retrieve", "search", "list", "clear"],
-                "description": "Action to perform"
+                "description": "Action to perform",
             },
             "key": {
                 "type": "string",
-                "description": "Unique key for store/retrieve operations"
+                "description": "Unique key for store/retrieve operations",
             },
             "value": {
                 "type": "string",
-                "description": "Value to store (for 'store' action)"
+                "description": "Value to store (for 'store' action)",
             },
             "query": {
                 "type": "string",
-                "description": "Search query (for 'search' action)"
+                "description": "Search query (for 'search' action)",
             },
             "category": {
                 "type": "string",
-                "description": "Optional category for organization (e.g., 'decisions', 'discoveries', 'todos')"
-            }
+                "description": "Optional category for organization (e.g., 'decisions', 'discoveries', 'todos')",
+            },
         },
-        "required": ["action"]
+        "required": ["action"],
     }
 
     # Configuration
-    db_path: str = Field(default="workspace/memory.db", description="Path to SQLite database")
+    db_path: str = Field(
+        default="workspace/memory.db", description="Path to SQLite database"
+    )
 
     def model_post_init(self, __context: Any) -> None:
         """Initialize database after model creation"""
@@ -83,7 +86,8 @@ Use this to preserve important information that might be lost during context com
 
         conn = sqlite3.connect(self.db_path)
         try:
-            conn.execute("""
+            conn.execute(
+                """
                 CREATE TABLE IF NOT EXISTS memories (
                     key TEXT PRIMARY KEY,
                     value TEXT NOT NULL,
@@ -92,9 +96,14 @@ Use this to preserve important information that might be lost during context com
                     updated_at TEXT NOT NULL,
                     access_count INTEGER DEFAULT 0
                 )
-            """)
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_category ON memories(category)")
-            conn.execute("CREATE INDEX IF NOT EXISTS idx_updated ON memories(updated_at)")
+            """
+            )
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_category ON memories(category)"
+            )
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_updated ON memories(updated_at)"
+            )
             conn.commit()
         finally:
             conn.close()
@@ -105,7 +114,7 @@ Use this to preserve important information that might be lost during context com
         key: Optional[str] = None,
         value: Optional[str] = None,
         query: Optional[str] = None,
-        category: Optional[str] = None
+        category: Optional[str] = None,
     ) -> ToolResult:
         """Execute memory operation"""
         try:
@@ -120,11 +129,15 @@ Use this to preserve important information that might be lost during context com
             elif action == "clear":
                 return await self._clear(key, category)
             else:
-                return ToolResult(error=f"Unknown action: {action}. Valid actions: store, retrieve, search, list, clear")
+                return ToolResult(
+                    error=f"Unknown action: {action}. Valid actions: store, retrieve, search, list, clear"
+                )
         except Exception as e:
             return ToolResult(error=f"Memory operation failed: {str(e)}")
 
-    async def _store(self, key: Optional[str], value: Optional[str], category: Optional[str]) -> ToolResult:
+    async def _store(
+        self, key: Optional[str], value: Optional[str], category: Optional[str]
+    ) -> ToolResult:
         """Store a value with a key"""
         if not key:
             return ToolResult(error="'key' is required for store action")
@@ -135,7 +148,8 @@ Use this to preserve important information that might be lost during context com
         try:
             now = datetime.now().isoformat()
             # Use INSERT OR REPLACE to handle updates, preserving created_at for existing keys
-            conn.execute("""
+            conn.execute(
+                """
                 INSERT INTO memories (key, value, category, created_at, updated_at, access_count)
                 VALUES (?, ?, ?,
                     COALESCE((SELECT created_at FROM memories WHERE key = ?), ?),
@@ -146,9 +160,14 @@ Use this to preserve important information that might be lost during context com
                     value = excluded.value,
                     category = excluded.category,
                     updated_at = excluded.updated_at
-            """, (key, value, category, key, now, now, key))
+            """,
+                (key, value, category, key, now, now, key),
+            )
             conn.commit()
-            return ToolResult(output=f"Stored memory with key: '{key}'" + (f" in category: '{category}'" if category else ""))
+            return ToolResult(
+                output=f"Stored memory with key: '{key}'"
+                + (f" in category: '{category}'" if category else "")
+            )
         finally:
             conn.close()
 
@@ -160,12 +179,15 @@ Use this to preserve important information that might be lost during context com
         conn = sqlite3.connect(self.db_path)
         try:
             # Update access count
-            conn.execute("UPDATE memories SET access_count = access_count + 1 WHERE key = ?", (key,))
+            conn.execute(
+                "UPDATE memories SET access_count = access_count + 1 WHERE key = ?",
+                (key,),
+            )
             conn.commit()
 
             row = conn.execute(
                 "SELECT key, value, category, created_at, updated_at, access_count FROM memories WHERE key = ?",
-                (key,)
+                (key,),
             ).fetchone()
 
             if row:
@@ -175,17 +197,21 @@ Use this to preserve important information that might be lost during context com
                     "category": row[2],
                     "created_at": row[3],
                     "updated_at": row[4],
-                    "access_count": row[5]
+                    "access_count": row[5],
                 }
                 return ToolResult(output=json.dumps(result, indent=2))
             return ToolResult(error=f"No memory found with key: '{key}'")
         finally:
             conn.close()
 
-    async def _search(self, query: Optional[str], category: Optional[str]) -> ToolResult:
+    async def _search(
+        self, query: Optional[str], category: Optional[str]
+    ) -> ToolResult:
         """Search memories by query and/or category"""
         if not query and not category:
-            return ToolResult(error="Either 'query' or 'category' is required for search action")
+            return ToolResult(
+                error="Either 'query' or 'category' is required for search action"
+            )
 
         conn = sqlite3.connect(self.db_path)
         try:
@@ -194,38 +220,41 @@ Use this to preserve important information that might be lost during context com
                     """SELECT key, value, category FROM memories
                        WHERE category = ? AND (key LIKE ? OR value LIKE ?)
                        ORDER BY updated_at DESC""",
-                    (category, f"%{query}%", f"%{query}%")
+                    (category, f"%{query}%", f"%{query}%"),
                 ).fetchall()
             elif query:
                 rows = conn.execute(
                     """SELECT key, value, category FROM memories
                        WHERE key LIKE ? OR value LIKE ?
                        ORDER BY updated_at DESC""",
-                    (f"%{query}%", f"%{query}%")
+                    (f"%{query}%", f"%{query}%"),
                 ).fetchall()
             else:  # category only
                 rows = conn.execute(
                     """SELECT key, value, category FROM memories
                        WHERE category = ?
                        ORDER BY updated_at DESC""",
-                    (category,)
+                    (category,),
                 ).fetchall()
 
             results = []
             for r in rows:
                 value_preview = r[1][:200] + "..." if len(r[1]) > 200 else r[1]
-                results.append({
-                    "key": r[0],
-                    "value_preview": value_preview,
-                    "category": r[2]
-                })
+                results.append(
+                    {"key": r[0], "value_preview": value_preview, "category": r[2]}
+                )
 
-            return ToolResult(output=json.dumps({
-                "results": results,
-                "count": len(results),
-                "query": query,
-                "category": category
-            }, indent=2))
+            return ToolResult(
+                output=json.dumps(
+                    {
+                        "results": results,
+                        "count": len(results),
+                        "query": query,
+                        "category": category,
+                    },
+                    indent=2,
+                )
+            )
         finally:
             conn.close()
 
@@ -238,7 +267,7 @@ Use this to preserve important information that might be lost during context com
                     """SELECT key, category, access_count, updated_at FROM memories
                        WHERE category = ?
                        ORDER BY updated_at DESC""",
-                    (category,)
+                    (category,),
                 ).fetchall()
             else:
                 rows = conn.execute(
@@ -248,12 +277,14 @@ Use this to preserve important information that might be lost during context com
 
             items = []
             for r in rows:
-                items.append({
-                    "key": r[0],
-                    "category": r[1],
-                    "access_count": r[2],
-                    "updated_at": r[3]
-                })
+                items.append(
+                    {
+                        "key": r[0],
+                        "category": r[1],
+                        "access_count": r[2],
+                        "updated_at": r[3],
+                    }
+                )
 
             # Get category summary
             categories = conn.execute(
@@ -261,11 +292,16 @@ Use this to preserve important information that might be lost during context com
             ).fetchall()
             category_summary = {c[0] or "uncategorized": c[1] for c in categories}
 
-            return ToolResult(output=json.dumps({
-                "memories": items,
-                "count": len(items),
-                "categories": category_summary
-            }, indent=2))
+            return ToolResult(
+                output=json.dumps(
+                    {
+                        "memories": items,
+                        "count": len(items),
+                        "categories": category_summary,
+                    },
+                    indent=2,
+                )
+            )
         finally:
             conn.close()
 
@@ -280,9 +316,13 @@ Use this to preserve important information that might be lost during context com
                     return ToolResult(output=f"Cleared memory with key: '{key}'")
                 return ToolResult(error=f"No memory found with key: '{key}'")
             elif category:
-                cursor = conn.execute("DELETE FROM memories WHERE category = ?", (category,))
+                cursor = conn.execute(
+                    "DELETE FROM memories WHERE category = ?", (category,)
+                )
                 conn.commit()
-                return ToolResult(output=f"Cleared {cursor.rowcount} memories in category: '{category}'")
+                return ToolResult(
+                    output=f"Cleared {cursor.rowcount} memories in category: '{category}'"
+                )
             else:
                 cursor = conn.execute("DELETE FROM memories")
                 conn.commit()

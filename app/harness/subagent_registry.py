@@ -9,16 +9,16 @@ from typing import Any, Dict, Optional, Type
 
 from pydantic import BaseModel
 
+from app.agent.reviewer import Reviewer  # Existing review agent
 from app.agent.subagents.base_subagent import BaseSubAgent
+from app.agent.subagents.build_agent import BuildAgent
+from app.agent.subagents.coding_agent import CodingAgent
 from app.agent.subagents.explore_agent import ExploreAgent
 from app.agent.subagents.plan_agent import PlanAgent
-from app.agent.subagents.coding_agent import CodingAgent
 from app.agent.subagents.test_agent import TestAgent
-from app.agent.subagents.build_agent import BuildAgent
-from app.agent.reviewer import Reviewer  # Existing review agent
 from app.config import Config
-from app.logger import logger
 from app.llm import LLM
+from app.logger import logger
 
 
 class SubAgentRegistry(BaseModel):
@@ -47,7 +47,7 @@ class SubAgentRegistry(BaseModel):
         agent_type: str,
         task: str,
         context: Optional[Dict[str, Any]] = None,
-        **kwargs
+        **kwargs,
     ) -> BaseSubAgent:
         """
         Spawn a sub-agent instance configured for the given task.
@@ -82,11 +82,7 @@ class SubAgentRegistry(BaseModel):
         # Create agent instance
         logger.info(f"🏗️  Spawning {agent_type} agent for task")
 
-        agent = agent_class.create_for_task(
-            task=task,
-            context=context,
-            **agent_config
-        )
+        agent = agent_class.create_for_task(task=task, context=context, **agent_config)
 
         return agent
 
@@ -150,7 +146,14 @@ class SubAgentRegistry(BaseModel):
 
         if any(
             kw in task_lower
-            for kw in ["plan", "design", "architecture", "approach", "strategy", "how to"]
+            for kw in [
+                "plan",
+                "design",
+                "architecture",
+                "approach",
+                "strategy",
+                "how to",
+            ]
         ):
             return "plan"
 

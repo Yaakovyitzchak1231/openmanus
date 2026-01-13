@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 from typing import TYPE_CHECKING, Dict, Optional
 from uuid import uuid4
 
@@ -11,6 +10,7 @@ from pydantic import BaseModel
 
 from app.config import config
 from app.harness.recording import RunRecorder
+
 
 if TYPE_CHECKING:
     from app.agent.manus import Manus
@@ -232,6 +232,14 @@ def _html_page() -> str:
       box-shadow: 0 12px 20px rgba(15, 118, 110, 0.24);
     }
 
+    button:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.7;
+    }
+
     .meta {
       color: var(--muted);
       font-size: 0.85rem;
@@ -289,9 +297,9 @@ def _html_page() -> str:
     </header>
 
     <section class=\"panel\">
-      <div id=\"messages\" class=\"messages\"></div>
+      <div id=\"messages\" class=\"messages\" aria-live=\"polite\"></div>
       <form id=\"chat-form\" class=\"composer\">
-        <textarea id=\"message\" placeholder=\"Describe the task you want the agent to complete...\"></textarea>
+        <textarea id=\"message\" placeholder=\"Describe the task you want the agent to complete...\" required></textarea>
         <div class=\"controls\">
           <button type=\"submit\">Send to Manus</button>
           <div class=\"meta\" id=\"status\">Session: new</div>
@@ -305,6 +313,7 @@ def _html_page() -> str:
     const formEl = document.getElementById('chat-form');
     const messageEl = document.getElementById('message');
     const statusEl = document.getElementById('status');
+    const submitBtn = formEl.querySelector('button[type=\"submit\"]');
     let sessionId = localStorage.getItem('openmanus.session');
 
     const addMessage = (role, content) => {
@@ -333,6 +342,17 @@ def _html_page() -> str:
       updateStatus(`Session: ${sessionId}`);
     }
 
+    // Ctrl+Enter to submit
+    messageEl.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        // Only submit if button is not disabled (not already submitting)
+        if (!submitBtn.disabled) {
+          formEl.requestSubmit();
+        }
+      }
+    });
+
     formEl.addEventListener('submit', async (event) => {
       event.preventDefault();
       const message = messageEl.value.trim();
@@ -344,40 +364,58 @@ def _html_page() -> str:
       messageEl.value = '';
       updateStatus('Thinking...');
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, session_id: sessionId })
-      });
+      // UX Improvement: specific button state
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+      submitBtn.setAttribute('aria-busy', 'true');
 
-      if (!response.ok) {
-        updateStatus('Error');
-        addMessage('system', 'Something went wrong while calling the agent.');
-        return;
-      }
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, session_id: sessionId })
+        });
 
-      const payload = await response.json();
-      sessionId = payload.session_id;
-      localStorage.setItem('openmanus.session', sessionId);
-      if (payload.summary) {
-        const parts = [`Session: ${sessionId}`];
-        if (payload.summary.steps !== undefined) {
-          parts.push(`steps: ${payload.summary.steps}`);
-        }
-        if (payload.summary.tool_calls !== undefined) {
-          parts.push(`tools: ${payload.summary.tool_calls}`);
-        }
-        updateStatus(parts.join(' | '));
-      } else {
-        updateStatus(`Session: ${sessionId}`);
-      }
-
-      (payload.messages || []).forEach((msg) => {
-        if (msg.role === 'user') {
+        if (!response.ok) {
+          updateStatus('Error');
+          addMessage('system', 'Something went wrong while calling the agent.');
           return;
         }
-        addMessage(msg.role || 'assistant', msg.content || '');
-      });
+
+        const payload = await response.json();
+        sessionId = payload.session_id;
+        localStorage.setItem('openmanus.session', sessionId);
+        if (payload.summary) {
+          const parts = [`Session: ${sessionId}`];
+          if (payload.summary.steps !== undefined) {
+            parts.push(`steps: ${payload.summary.steps}`);
+          }
+          if (payload.summary.tool_calls !== undefined) {
+            parts.push(`tools: ${payload.summary.tool_calls}`);
+          }
+          updateStatus(parts.join(' | '));
+        } else {
+          updateStatus(`Session: ${sessionId}`);
+        }
+
+        (payload.messages || []).forEach((msg) => {
+          if (msg.role === 'user') {
+            return;
+          }
+          addMessage(msg.role || 'assistant', msg.content || '');
+        });
+      } catch (error) {
+        updateStatus('Error');
+        addMessage('system', 'Network error or failed to contact server.');
+        console.error(error);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        submitBtn.removeAttribute('aria-busy');
+        // Keep focus on textarea for next input
+        messageEl.focus();
+      }
     });
   </script>
 </body>

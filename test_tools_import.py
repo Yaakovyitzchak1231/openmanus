@@ -29,7 +29,7 @@ def test_tool_imports():
     for name, tool_class in tools_to_test:
         try:
             logger.info(f"Initializing {name}...")
-            instance = tool_class()
+            tool_class()
             logger.info(f"✅ {name} initialized successfully.")
         except Exception as e:
             logger.error(f"❌ {name} failed: {str(e)}")

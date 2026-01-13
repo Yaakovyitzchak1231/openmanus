@@ -5,6 +5,7 @@ from pydantic import Field, model_validator
 from app.agent.browser import BrowserContextHelper
 from app.agent.toolcall import ToolCallAgent
 from app.config import config
+from app.harness.subagent_registry import SubAgentRegistry
 from app.harness.tool_registry import ToolRegistry
 from app.logger import logger
 from app.memory import ContextManager, MemoryTool
@@ -13,13 +14,12 @@ from app.schema import Message
 from app.tool import Bash, Terminate, ToolCollection
 from app.tool.ask_human import AskHuman
 from app.tool.browser_use_tool import BrowserUseTool
-from app.tool.mcp_code_execution import MCPCodeExecution
 from app.tool.mcp import MCPClients
+from app.tool.mcp_code_execution import MCPCodeExecution
 from app.tool.python_execute import PythonExecute
 from app.tool.str_replace_editor import StrReplaceEditor
 from app.tool.task import TaskTool
 from app.tool.tool_search import ToolSearchTool
-from app.harness.subagent_registry import SubAgentRegistry
 
 
 class Manus(ToolCallAgent):
@@ -78,7 +78,9 @@ class Manus(ToolCallAgent):
             source="local",
         )
         self.tool_registry.add_tools(
-            MCPCodeExecution(mcp_clients=self.mcp_clients, settings=config.mcp_config.code_execution),
+            MCPCodeExecution(
+                mcp_clients=self.mcp_clients, settings=config.mcp_config.code_execution
+            ),
             source="local",
         )
 
@@ -116,7 +118,9 @@ class Manus(ToolCallAgent):
         compaction_strategy = "simple"
         if hasattr(config, "memory") and config.memory:
             memory_enabled = getattr(config.memory, "enabled", True)
-            compaction_threshold = getattr(config.memory, "compaction_threshold_tokens", 100000)
+            compaction_threshold = getattr(
+                config.memory, "compaction_threshold_tokens", 100000
+            )
             compaction_strategy = getattr(config.memory, "strategy", "simple")
 
         if memory_enabled:
@@ -124,14 +128,18 @@ class Manus(ToolCallAgent):
                 compaction_threshold_tokens=compaction_threshold,
                 strategy=compaction_strategy,
             )
-            logger.info(f"Context manager enabled: threshold={compaction_threshold}, strategy={compaction_strategy}")
+            logger.info(
+                f"Context manager enabled: threshold={compaction_threshold}, strategy={compaction_strategy}"
+            )
 
         # Apply effort level from config
         if hasattr(config, "agent") and config.agent:
             effort = getattr(config.agent, "effort_level", "medium")
             if effort in ["low", "medium", "high"]:
                 self.effort_level = effort
-                logger.info(f"Effort level set to: {self.effort_level} (effective max_steps={self.effective_max_steps})")
+                logger.info(
+                    f"Effort level set to: {self.effort_level} (effective max_steps={self.effective_max_steps})"
+                )
 
         return self
 
