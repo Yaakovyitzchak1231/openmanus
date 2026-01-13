@@ -9,15 +9,25 @@ specific capabilities.
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import Any, Dict, Optional
 
 from pydantic import Field
 
 from app.logger import logger
 from app.tool.base import BaseTool, ToolResult
 
-if TYPE_CHECKING:
-    from app.harness.subagent_registry import SubAgentRegistry
+# Import SubAgentRegistry at runtime for Pydantic model validation
+# Using a lazy import to avoid circular dependencies
+SubAgentRegistry = None
+
+
+def _get_subagent_registry_class():
+    """Lazy import of SubAgentRegistry to avoid circular imports."""
+    global SubAgentRegistry
+    if SubAgentRegistry is None:
+        from app.harness.subagent_registry import SubAgentRegistry as _SubAgentRegistry
+        SubAgentRegistry = _SubAgentRegistry
+    return SubAgentRegistry
 
 
 class TaskTool(BaseTool):
@@ -81,7 +91,8 @@ class TaskTool(BaseTool):
     }
 
     # Registry will be injected at initialization
-    subagent_registry: Optional[SubAgentRegistry] = Field(default=None, exclude=True)
+    # Using Any type to avoid Pydantic forward reference issues
+    subagent_registry: Optional[Any] = Field(default=None, exclude=True)
 
     async def execute(
         self,

@@ -155,20 +155,37 @@ class TokenCounter:
         for message in messages:
             tokens = self.BASE_MESSAGE_TOKENS  # Base tokens per message
 
+            # Handle both dict and Pydantic Message objects
+            if hasattr(message, "model_dump"):
+                # Pydantic model - convert to dict
+                msg = message.model_dump()
+            elif hasattr(message, "get"):
+                # Already a dict
+                msg = message
+            else:
+                # Try to access attributes directly
+                msg = {
+                    "role": getattr(message, "role", ""),
+                    "content": getattr(message, "content", None),
+                    "tool_calls": getattr(message, "tool_calls", None),
+                    "name": getattr(message, "name", None),
+                    "tool_call_id": getattr(message, "tool_call_id", None),
+                }
+
             # Add role tokens
-            tokens += self.count_text(message.get("role", ""))
+            tokens += self.count_text(msg.get("role", ""))
 
             # Add content tokens
-            if "content" in message:
-                tokens += self.count_content(message["content"])
+            if msg.get("content"):
+                tokens += self.count_content(msg["content"])
 
             # Add tool calls tokens
-            if "tool_calls" in message:
-                tokens += self.count_tool_calls(message["tool_calls"])
+            if msg.get("tool_calls"):
+                tokens += self.count_tool_calls(msg["tool_calls"])
 
             # Add name and tool_call_id tokens
-            tokens += self.count_text(message.get("name", ""))
-            tokens += self.count_text(message.get("tool_call_id", ""))
+            tokens += self.count_text(msg.get("name") or "")
+            tokens += self.count_text(msg.get("tool_call_id") or "")
 
             total_tokens += tokens
 
