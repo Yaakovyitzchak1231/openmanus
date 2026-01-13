@@ -2,7 +2,7 @@ import json
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PrivateAttr
 
 from app.utils.logger import logger
 
@@ -118,10 +118,11 @@ class BaseTool(ABC, BaseModel):
         default=None,
         description="Usage examples to improve LLM accuracy"
     )
+    # Phase 2: Cache for computed description with examples (private attr)
+    _cached_description: Optional[str] = PrivateAttr(default=None)
 
     class Config:
         arbitrary_types_allowed = True
-        underscore_attrs_are_private = False
 
     # def __init__(self, **data):
     #     """Initialize tool with model validation and schema registration."""
@@ -160,16 +161,23 @@ class BaseTool(ABC, BaseModel):
         }
 
     def _description_with_examples(self) -> str:
-        """Generate description with embedded examples.
+        """Generate description with embedded examples (cached).
 
         Embeds usage examples directly into the tool description,
         which improves LLM tool accuracy by ~18%.
 
+        Phase 2: Results are cached to avoid rebuilding on every call.
+
         Returns:
             Description string with examples appended if available
         """
+        # Return cached version if available
+        if self._cached_description is not None:
+            return self._cached_description
+
         if not self.examples:
-            return self.description
+            self._cached_description = self.description
+            return self._cached_description
 
         examples_text = "\n\nExamples:"
         for i, ex in enumerate(self.examples, 1):
@@ -180,7 +188,8 @@ class BaseTool(ABC, BaseModel):
             if ex.notes:
                 examples_text += f"\n   Note: {ex.notes}"
 
-        return self.description + examples_text
+        self._cached_description = self.description + examples_text
+        return self._cached_description
 
     # def get_schemas(self) -> Dict[str, List[ToolSchema]]:
     #     """Get all registered tool schemas.
