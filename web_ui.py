@@ -232,6 +232,31 @@ def _html_page() -> str:
       box-shadow: 0 12px 20px rgba(15, 118, 110, 0.24);
     }
 
+    button.loading {
+      cursor: not-allowed;
+      opacity: 0.7;
+      padding-right: 40px;
+      position: relative;
+    }
+
+    button.loading::after {
+      content: "";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      margin-top: -9px;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     .meta {
       color: var(--muted);
       font-size: 0.85rem;
@@ -344,40 +369,54 @@ def _html_page() -> str:
       messageEl.value = '';
       updateStatus('Thinking...');
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, session_id: sessionId })
-      });
+      const submitButton = formEl.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.classList.add('loading');
 
-      if (!response.ok) {
-        updateStatus('Error');
-        addMessage('system', 'Something went wrong while calling the agent.');
-        return;
-      }
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, session_id: sessionId })
+        });
 
-      const payload = await response.json();
-      sessionId = payload.session_id;
-      localStorage.setItem('openmanus.session', sessionId);
-      if (payload.summary) {
-        const parts = [`Session: ${sessionId}`];
-        if (payload.summary.steps !== undefined) {
-          parts.push(`steps: ${payload.summary.steps}`);
-        }
-        if (payload.summary.tool_calls !== undefined) {
-          parts.push(`tools: ${payload.summary.tool_calls}`);
-        }
-        updateStatus(parts.join(' | '));
-      } else {
-        updateStatus(`Session: ${sessionId}`);
-      }
-
-      (payload.messages || []).forEach((msg) => {
-        if (msg.role === 'user') {
+        if (!response.ok) {
+          updateStatus('Error');
+          addMessage('system', 'Something went wrong while calling the agent.');
           return;
         }
-        addMessage(msg.role || 'assistant', msg.content || '');
-      });
+
+        const payload = await response.json();
+        sessionId = payload.session_id;
+        localStorage.setItem('openmanus.session', sessionId);
+        if (payload.summary) {
+          const parts = [`Session: ${sessionId}`];
+          if (payload.summary.steps !== undefined) {
+            parts.push(`steps: ${payload.summary.steps}`);
+          }
+          if (payload.summary.tool_calls !== undefined) {
+            parts.push(`tools: ${payload.summary.tool_calls}`);
+          }
+          updateStatus(parts.join(' | '));
+        } else {
+          updateStatus(`Session: ${sessionId}`);
+        }
+
+        (payload.messages || []).forEach((msg) => {
+          if (msg.role === 'user') {
+            return;
+          }
+          addMessage(msg.role || 'assistant', msg.content || '');
+        });
+      } catch (e) {
+        updateStatus('Error');
+        addMessage('system', 'Network error or internal issue.');
+        console.error(e);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.classList.remove('loading');
+        messageEl.focus();
+      }
     });
   </script>
 </body>
