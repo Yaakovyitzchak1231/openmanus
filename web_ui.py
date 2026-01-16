@@ -232,6 +232,25 @@ def _html_page() -> str:
       box-shadow: 0 12px 20px rgba(15, 118, 110, 0.24);
     }
 
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
     .meta {
       color: var(--muted);
       font-size: 0.85rem;
@@ -291,6 +310,7 @@ def _html_page() -> str:
     <section class=\"panel\">
       <div id=\"messages\" class=\"messages\"></div>
       <form id=\"chat-form\" class=\"composer\">
+        <label for="message" class="sr-only">Describe the task you want the agent to complete</label>
         <textarea id=\"message\" placeholder=\"Describe the task you want the agent to complete...\"></textarea>
         <div class=\"controls\">
           <button type=\"submit\">Send to Manus</button>
@@ -344,40 +364,54 @@ def _html_page() -> str:
       messageEl.value = '';
       updateStatus('Thinking...');
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, session_id: sessionId })
-      });
+      const submitBtn = formEl.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.textContent = 'Thinking...';
 
-      if (!response.ok) {
-        updateStatus('Error');
-        addMessage('system', 'Something went wrong while calling the agent.');
-        return;
-      }
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, session_id: sessionId })
+        });
 
-      const payload = await response.json();
-      sessionId = payload.session_id;
-      localStorage.setItem('openmanus.session', sessionId);
-      if (payload.summary) {
-        const parts = [`Session: ${sessionId}`];
-        if (payload.summary.steps !== undefined) {
-          parts.push(`steps: ${payload.summary.steps}`);
-        }
-        if (payload.summary.tool_calls !== undefined) {
-          parts.push(`tools: ${payload.summary.tool_calls}`);
-        }
-        updateStatus(parts.join(' | '));
-      } else {
-        updateStatus(`Session: ${sessionId}`);
-      }
-
-      (payload.messages || []).forEach((msg) => {
-        if (msg.role === 'user') {
+        if (!response.ok) {
+          updateStatus('Error');
+          addMessage('system', 'Something went wrong while calling the agent.');
           return;
         }
-        addMessage(msg.role || 'assistant', msg.content || '');
-      });
+
+        const payload = await response.json();
+        sessionId = payload.session_id;
+        localStorage.setItem('openmanus.session', sessionId);
+        if (payload.summary) {
+          const parts = [`Session: ${sessionId}`];
+          if (payload.summary.steps !== undefined) {
+            parts.push(`steps: ${payload.summary.steps}`);
+          }
+          if (payload.summary.tool_calls !== undefined) {
+            parts.push(`tools: ${payload.summary.tool_calls}`);
+          }
+          updateStatus(parts.join(' | '));
+        } else {
+          updateStatus(`Session: ${sessionId}`);
+        }
+
+        (payload.messages || []).forEach((msg) => {
+          if (msg.role === 'user') {
+            return;
+          }
+          addMessage(msg.role || 'assistant', msg.content || '');
+        });
+      } catch (e) {
+        updateStatus('Error');
+        addMessage('system', 'An error occurred while communicating with the server.');
+        console.error(e);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
     });
   </script>
 </body>
