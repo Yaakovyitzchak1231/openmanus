@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Callable, Iterable, List, Literal, Optional
+from typing import Callable, Iterable, List, Literal
 
 from pydantic import Field
 
 from app.tool.base import BaseTool, ToolResult
+
 
 ToolSearchDetail = Literal["names", "schemas"]
 
@@ -110,4 +111,3 @@ class ToolSearchTool(BaseTool):
             ),
         }
         return ToolResult(output=json.dumps(payload, ensure_ascii=False, indent=2))
-

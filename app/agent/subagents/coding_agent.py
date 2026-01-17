@@ -9,8 +9,6 @@ Two modes:
 2. Coding Mode: Subsequent sessions - incremental feature implementation with testing and commits
 """
 
-import json
-from datetime import datetime
 from typing import Literal, Optional
 
 from pydantic import Field
@@ -18,9 +16,9 @@ from pydantic import Field
 from app.agent.subagents.base_subagent import BaseSubAgent
 from app.tool import Terminate
 from app.tool.bash import Bash
+from app.tool.browser_use_tool import BrowserUseTool
 from app.tool.python_execute import PythonExecute
 from app.tool.str_replace_editor import StrReplaceEditor
-from app.tool.browser_use_tool import BrowserUseTool
 from app.tool.test_runner import TestRunner
 from app.tool.tool_collection import ToolCollection
 
@@ -139,33 +137,43 @@ class CodingAgent(BaseSubAgent):
     """
 
     name: str = "coding_agent"
-    description: str = "Long-running coding with session management (Initializer/Coding modes)"
+    description: str = (
+        "Long-running coding with session management (Initializer/Coding modes)"
+    )
     agent_type: str = "code"
 
     # Dual mode configuration
     mode: Literal["initializer", "coding"] = Field(
         default="coding",
-        description="Agent mode: 'initializer' for first session, 'coding' for subsequent sessions"
+        description="Agent mode: 'initializer' for first session, 'coding' for subsequent sessions",
     )
 
     # Configuration for long-running coding
     max_steps: int = Field(default=50, description="Long-running coding sessions")
-    effort_level: str = Field(default="high", description="High effort for quality implementation")
+    effort_level: str = Field(
+        default="high", description="High effort for quality implementation"
+    )
 
     # File paths (configurable)
-    init_script_path: str = Field(default="init.sh", description="Path to initialization script")
-    feature_list_path: str = Field(default="feature_list.json", description="Path to feature tracking file")
-    progress_log_path: str = Field(default="claude-progress.txt", description="Path to progress log")
+    init_script_path: str = Field(
+        default="init.sh", description="Path to initialization script"
+    )
+    feature_list_path: str = Field(
+        default="feature_list.json", description="Path to feature tracking file"
+    )
+    progress_log_path: str = Field(
+        default="claude-progress.txt", description="Path to progress log"
+    )
 
     # Tool set for coding (comprehensive)
     available_tools: ToolCollection = Field(
         default_factory=lambda: ToolCollection(
-            Bash(),              # For git, file operations, running servers
-            PythonExecute(),     # For executing Python code
+            Bash(),  # For git, file operations, running servers
+            PythonExecute(),  # For executing Python code
             StrReplaceEditor(),  # For editing files
-            BrowserUseTool(),    # For end-to-end testing
-            TestRunner(),        # For running tests
-            Terminate(),         # To signal completion
+            BrowserUseTool(),  # For end-to-end testing
+            TestRunner(),  # For running tests
+            Terminate(),  # To signal completion
         )
     )
 

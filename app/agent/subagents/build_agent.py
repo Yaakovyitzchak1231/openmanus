@@ -89,9 +89,9 @@ class BuildAgent(BaseSubAgent):
     # Tool set for build verification
     available_tools: ToolCollection = Field(
         default_factory=lambda: ToolCollection(
-            Bash(),           # For pip, npm, build commands
+            Bash(),  # For pip, npm, build commands
             PythonExecute(),  # For checking imports, running scripts
-            Terminate(),      # To signal completion
+            Terminate(),  # To signal completion
         )
     )
 

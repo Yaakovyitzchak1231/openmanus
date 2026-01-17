@@ -63,9 +63,15 @@ class Message(BaseModel):
 
     # Summary metadata for context compaction tracking
     # These fields are for internal use and excluded from API calls
-    is_summary: bool = Field(default=False, description="Whether this message is a compaction summary")
-    original_message_count: Optional[int] = Field(default=None, description="Number of messages summarized into this one")
-    original_token_count: Optional[int] = Field(default=None, description="Token count before compaction")
+    is_summary: bool = Field(
+        default=False, description="Whether this message is a compaction summary"
+    )
+    original_message_count: Optional[int] = Field(
+        default=None, description="Number of messages summarized into this one"
+    )
+    original_token_count: Optional[int] = Field(
+        default=None, description="Token count before compaction"
+    )
 
     def __add__(self, other) -> List["Message"]:
         """支持 Message + list 或 Message + Message 的操作"""

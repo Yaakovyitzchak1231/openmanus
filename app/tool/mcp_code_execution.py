@@ -7,7 +7,8 @@ from pydantic import Field
 from app.config import MCPCodeExecutionSettings
 from app.logger import logger
 from app.tool.base import BaseTool, ToolResult
-from app.tool.mcp import MCPClientTool, MCPClients
+from app.tool.mcp import MCPClients, MCPClientTool
+
 
 _CODE_EXEC_DESCRIPTION = """\
 Execute code via an MCP server to reduce tool token overhead.
@@ -76,9 +77,7 @@ class MCPCodeExecution(BaseTool):
 
     def _candidate_tools(self, server_id: Optional[str]) -> list[MCPClientTool]:
         tools = [
-            tool
-            for tool in self.mcp_clients.tools
-            if isinstance(tool, MCPClientTool)
+            tool for tool in self.mcp_clients.tools if isinstance(tool, MCPClientTool)
         ]
         if server_id:
             return [tool for tool in tools if tool.server_id == server_id]
@@ -124,9 +123,7 @@ class MCPCodeExecution(BaseTool):
 
         return scored[0][1] if scored else None
 
-    def _build_payload(
-        self, tool: MCPClientTool, language: str, code: str
-    ) -> dict:
+    def _build_payload(self, tool: MCPClientTool, language: str, code: str) -> dict:
         props = (tool.parameters or {}).get("properties", {})
         payload: dict = {}
 
