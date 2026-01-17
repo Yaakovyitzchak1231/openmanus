@@ -445,6 +445,21 @@ class LLM:
             else:
                 messages = self.format_messages(messages, supports_images)
 
+            if self.enable_response_cache:
+                cache_key = self._hash_cache_key(
+                    {
+                        "model": self.model,
+                        "messages": messages,
+                        "temperature": temperature,
+                        "max_tokens": self.max_tokens,
+                    }
+                )
+                if cached := self._cache_get(cache_key):
+                    logger.info(f"Cache hit for key: {cache_key}")
+                    if stream:
+                        print(cached["content"])
+                    return cached["content"]
+
             # Calculate input token count
             input_tokens = self.count_message_tokens(messages)
 
@@ -481,7 +496,16 @@ class LLM:
                     response.usage.prompt_tokens, response.usage.completion_tokens
                 )
 
-                return response.choices[0].message.content
+                content = response.choices[0].message.content
+                if self.enable_response_cache:
+                    self._cache_set(
+                        cache_key,
+                        {
+                            "content": content,
+                            "expires_at": time.time() + self._response_cache_ttl_seconds,
+                        },
+                    )
+                return content
 
             # Streaming request, For streaming, update estimated token count before making the request
             self.update_token_count(input_tokens)
@@ -500,6 +524,15 @@ class LLM:
             full_response = "".join(collected_messages).strip()
             if not full_response:
                 raise ValueError("Empty response from streaming LLM")
+
+            if self.enable_response_cache:
+                self._cache_set(
+                    cache_key,
+                    {
+                        "content": full_response,
+                        "expires_at": time.time() + self._response_cache_ttl_seconds,
+                    },
+                )
 
             # estimate completion tokens for streaming response
             completion_tokens = self.count_tokens(completion_text)
@@ -618,6 +651,21 @@ class LLM:
             else:
                 all_messages = formatted_messages
 
+            if self.enable_response_cache:
+                cache_key = self._hash_cache_key(
+                    {
+                        "model": self.model,
+                        "messages": all_messages,
+                        "temperature": temperature,
+                        "max_tokens": self.max_tokens,
+                    }
+                )
+                if cached := self._cache_get(cache_key):
+                    logger.info(f"Cache hit for key: {cache_key}")
+                    if stream:
+                        print(cached["content"])
+                    return cached["content"]
+
             # Calculate tokens and check limits
             input_tokens = self.count_message_tokens(all_messages)
             if not self.check_token_limit(input_tokens):
@@ -647,7 +695,16 @@ class LLM:
                     raise ValueError("Empty or invalid response from LLM")
 
                 self.update_token_count(response.usage.prompt_tokens)
-                return response.choices[0].message.content
+                content = response.choices[0].message.content
+                if self.enable_response_cache:
+                    self._cache_set(
+                        cache_key,
+                        {
+                            "content": content,
+                            "expires_at": time.time() + self._response_cache_ttl_seconds,
+                        },
+                    )
+                return content
 
             # Handle streaming request
             self.update_token_count(input_tokens)
@@ -664,6 +721,15 @@ class LLM:
 
             if not full_response:
                 raise ValueError("Empty response from streaming LLM")
+
+            if self.enable_response_cache:
+                self._cache_set(
+                    cache_key,
+                    {
+                        "content": full_response,
+                        "expires_at": time.time() + self._response_cache_ttl_seconds,
+                    },
+                )
 
             return full_response
 
