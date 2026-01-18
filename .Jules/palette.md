@@ -1,0 +1,3 @@
+## 2024-03-07 - Add loading state to submit button
+**Learning:** For single-file FastAPI apps serving HTML strings (`web_ui.py`), UI state management (like loading spinners) must be implemented with vanilla JS event listeners and class toggling. Testing these requires extracting the HTML string via Regex/AST to run independent Playwright tests, bypassing backend dependency initialization.
+**Action:** When modifying embedded frontends, always verify state transitions (disabled, loading text) using a dedicated Playwright script that mocks the backend API, as running the full backend is often impractical for UI tweaks.
