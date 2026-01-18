@@ -16,6 +16,7 @@ from pydantic import Field
 from app.logger import logger
 from app.tool.base import BaseTool, ToolResult
 
+
 if TYPE_CHECKING:
     from app.harness.subagent_registry import SubAgentRegistry
 

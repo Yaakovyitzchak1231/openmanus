@@ -47,15 +47,11 @@ class ToolCallAgent(ReActAgent):
         allowed.update(name.lower() for name in (self.loaded_tool_names or []))
 
         selected_tools = [
-            tool
-            for tool in self.available_tools.tools
-            if tool.name.lower() in allowed
+            tool for tool in self.available_tools.tools if tool.name.lower() in allowed
         ]
         return [tool.to_param() for tool in selected_tools]
 
-    def _handle_tool_side_effects(
-        self, *, name: str, args: dict, result: Any
-    ) -> None:
+    def _handle_tool_side_effects(self, *, name: str, args: dict, result: Any) -> None:
         if not self.use_tool_search:
             return
 
@@ -135,7 +131,11 @@ class ToolCallAgent(ReActAgent):
         content = response.content if response and response.content else ""
         self._record_event(
             "tool_select",
-            {"tools": [call.function.name for call in tool_calls] if tool_calls else []},
+            {
+                "tools": [call.function.name for call in tool_calls]
+                if tool_calls
+                else []
+            },
         )
 
         # Log response info

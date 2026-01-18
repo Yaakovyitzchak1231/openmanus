@@ -72,8 +72,8 @@ class ExploreAgent(BaseSubAgent):
     # Minimal tool set for exploration
     available_tools: ToolCollection = Field(
         default_factory=lambda: ToolCollection(
-            Bash(),           # For find, grep, ls, cat commands
-            Terminate(),      # To signal completion
+            Bash(),  # For find, grep, ls, cat commands
+            Terminate(),  # To signal completion
         )
     )
 

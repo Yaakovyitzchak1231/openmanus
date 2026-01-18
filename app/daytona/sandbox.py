@@ -38,6 +38,7 @@ if daytona_config.target:
 else:
     logger.warning("No Daytona target found in environment variables")
 
+
 def _get_daytona_client() -> Daytona:
     if not daytona_config.api_key:
         raise RuntimeError(

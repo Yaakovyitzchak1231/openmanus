@@ -255,7 +255,9 @@ class LLM:
 
     @staticmethod
     def _hash_cache_key(payload: dict) -> str:
-        encoded = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        encoded = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode(
+            "utf-8"
+        )
         return hashlib.sha256(encoded).hexdigest()
 
     def count_tokens(self, text: str) -> int:
@@ -348,6 +350,9 @@ class LLM:
                 message = message.to_dict()
 
             if isinstance(message, dict):
+                # Create a copy to avoid side effects on the original dictionary
+                message = message.copy()
+
                 # If message is a dict, ensure it has required fields
                 if "role" not in message:
                     raise ValueError("Message dict must contain 'role' field")
@@ -467,6 +472,18 @@ class LLM:
                     temperature if temperature is not None else self.temperature
                 )
 
+            # Check cache
+            cache_key = None
+            if self.enable_response_cache:
+                cache_key = self._hash_cache_key(params)
+                cached = self._cache_get(cache_key)
+                if cached:
+                    logger.info("Cache hit for LLM response")
+                    content = cached["content"]
+                    if stream:
+                        print(content)
+                    return content
+
             if not stream:
                 # Non-streaming request
                 response = await self.client.chat.completions.create(
@@ -481,7 +498,10 @@ class LLM:
                     response.usage.prompt_tokens, response.usage.completion_tokens
                 )
 
-                return response.choices[0].message.content
+                content = response.choices[0].message.content
+                if self.enable_response_cache and cache_key:
+                    self._cache_set(cache_key, {"content": content})
+                return content
 
             # Streaming request, For streaming, update estimated token count before making the request
             self.update_token_count(input_tokens)
@@ -507,6 +527,9 @@ class LLM:
                 f"Estimated completion tokens for streaming response: {completion_tokens}"
             )
             self.total_completion_tokens += completion_tokens
+
+            if self.enable_response_cache and cache_key:
+                self._cache_set(cache_key, {"content": full_response})
 
             return full_response
 
@@ -639,6 +662,18 @@ class LLM:
                     temperature if temperature is not None else self.temperature
                 )
 
+            # Check cache
+            cache_key = None
+            if self.enable_response_cache:
+                cache_key = self._hash_cache_key(params)
+                cached = self._cache_get(cache_key)
+                if cached:
+                    logger.info("Cache hit for LLM response")
+                    content = cached["content"]
+                    if stream:
+                        print(content)
+                    return content
+
             # Handle non-streaming request
             if not stream:
                 response = await self.client.chat.completions.create(**params)
@@ -647,7 +682,10 @@ class LLM:
                     raise ValueError("Empty or invalid response from LLM")
 
                 self.update_token_count(response.usage.prompt_tokens)
-                return response.choices[0].message.content
+                content = response.choices[0].message.content
+                if self.enable_response_cache and cache_key:
+                    self._cache_set(cache_key, {"content": content})
+                return content
 
             # Handle streaming request
             self.update_token_count(input_tokens)
@@ -664,6 +702,9 @@ class LLM:
 
             if not full_response:
                 raise ValueError("Empty response from streaming LLM")
+
+            if self.enable_response_cache and cache_key:
+                self._cache_set(cache_key, {"content": full_response})
 
             return full_response
 

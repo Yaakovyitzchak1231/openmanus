@@ -83,10 +83,10 @@ class TestAgent(BaseSubAgent):
     # Tool set for testing
     available_tools: ToolCollection = Field(
         default_factory=lambda: ToolCollection(
-            Bash(),           # For pytest commands, test discovery
+            Bash(),  # For pytest commands, test discovery
             PythonExecute(),  # For running Python tests directly
-            TestRunner(),     # Specialized test runner tool
-            Terminate(),      # To signal completion
+            TestRunner(),  # Specialized test runner tool
+            Terminate(),  # To signal completion
         )
     )
 

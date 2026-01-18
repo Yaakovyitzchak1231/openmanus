@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 from typing import TYPE_CHECKING, Dict, Optional
 from uuid import uuid4
 
@@ -11,6 +10,7 @@ from pydantic import BaseModel
 
 from app.config import config
 from app.harness.recording import RunRecorder
+
 
 if TYPE_CHECKING:
     from app.agent.manus import Manus
